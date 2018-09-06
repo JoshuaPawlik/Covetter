@@ -4,8 +4,10 @@
   "description": "A cover letter editing app",
   "main": "app/main.js",
   "scripts": {
-    "start": "electron .",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "NODE_ENV=DEV concurrently \"babel-node server.js\" \"sleep 2 && electron .\"",
+    "bundle": "webpack",
+    "watch": "NODE_ENV=DEV babel-node server.js",
+    "start:prod": "webpack && electron ."
   },
   "repository": {
     "type": "git",
@@ -18,8 +20,27 @@
   },
   "homepage": "https://github.com/Joshawesome12/Covetter#readme",
   "devDependencies": {
+    "babel-cli": "^6.26.0",
+    "babel-core": "^6.26.3",
+    "babel-loader": "^8.0.2",
+    "babel-polyfill": "^6.26.0",
+    "babel-preset-es2015": "^6.24.1",
+    "babel-preset-react": "^6.24.1",
+    "babel-preset-react-hmre": "^1.1.1",
+    "css-loader": "^1.0.0",
     "devtron": "^1.4.0",
     "electron": "^2.0.8",
-    "electron-packager": "^12.1.1"
+    "electron-packager": "^12.1.1",
+    "express": "^4.16.3",
+    "node-sass": "^4.9.3",
+    "sass-loader": "^7.1.0",
+    "style-loader": "^0.23.0",
+    "webpack": "^4.17.2",
+    "webpack-dev-middleware": "^3.2.0",
+    "webpack-hot-middleware": "^2.23.1"
+  },
+  "dependencies": {
+    "react": "^16.5.0",
+    "react-dom": "^16.5.0"
   }
 }
