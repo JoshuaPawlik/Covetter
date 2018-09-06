@@ -1,5 +1,5 @@
 {
-  "name": "covetter",
+  "name": "Covetter",
   "version": "1.0.0",
   "description": "A cover letter editing app",
   "main": "app/main.js",
@@ -16,5 +16,10 @@
   "bugs": {
     "url": "https://github.com/Joshawesome12/Covetter/issues"
   },
-  "homepage": "https://github.com/Joshawesome12/Covetter#readme"
+  "homepage": "https://github.com/Joshawesome12/Covetter#readme",
+  "devDependencies": {
+    "devtron": "^1.4.0",
+    "electron": "^2.0.8",
+    "electron-packager": "^12.1.1"
+  }
 }
