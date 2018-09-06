@@ -1,0 +1,20 @@
+{
+  "name": "covetter",
+  "version": "1.0.0",
+  "description": "A cover letter editing app",
+  "main": "app/main.js",
+  "scripts": {
+    "start": "electron .",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Joshawesome12/Covetter.git"
+  },
+  "author": "Joshua Pawlik",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Joshawesome12/Covetter/issues"
+  },
+  "homepage": "https://github.com/Joshawesome12/Covetter#readme"
+}
