@@ -21,7 +21,7 @@ const config = {
     libraryTarget: 'commonjs2'
   },
   module: {
-    loaders: [
+    rules: [
       { test: /\.js$/,
         loader: 'babel-loader',
         include: [
@@ -30,7 +30,7 @@ const config = {
         ],
         exclude: /node_modules/,
         query: {
-          presets: ['es2015', 'react', 'react-hmre']
+          presets: ['@babel/preset-react']
         }
       },
       { test: /\.scss$/, loader: 'style-loader!css-loader!sass-loader' },
