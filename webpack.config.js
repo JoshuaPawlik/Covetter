@@ -30,7 +30,8 @@ const config = {
         ],
         exclude: /node_modules/,
         query: {
-          presets: ['@babel/preset-react']
+          presets: ['@babel/preset-react'],
+          plugins: ["transform-class-properties"]
         }
       },
       {

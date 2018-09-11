@@ -1,2 +1,71 @@
+html
+	// overflow-y: hidden
+	margin: 0
+
 body
-  // color: blue
+	margin: 0
+	padding: 0
+
+.app
+	display: flex
+	flex-direction: row
+
+
+.writing
+	display: flex
+	align-items: center
+	// justify-content: center
+	flex-direction: column
+	height: 90vh
+	width: 90vw
+	margin: 0
+	padding-top: 10px
+
+	.title
+		resize: none
+		width: 80vw
+		border: none
+		outline: none
+		background: transparent
+		font-size: 1.5rem
+		// float: left
+		padding-top: 10px
+		padding-bottom: 20px
+		// border-bottom: 1px solid black
+
+
+	.textarea
+		width: 90%
+		height: 100%
+		outline: none
+		background: transparent
+		box-sizing: border-box
+		border: 2px solid #ccc
+		border-radius: 4px
+		// border: none
+		font-size: 1.2rem
+		resize: none
+		// background-color: #f8f8f8
+		// min-height: 100%
+		// overflow: scroll
+		// padding: 12px 20px
+		// padding: 1em
+
+
+.sidebar
+	display: flex
+	flex-direction: column
+	align-items: center
+	width: 70px
+	height: 100vh
+	background-color: #1A1A1A
+	margin: 0
+
+
+
+.home-icon
+	color: #FFFFFF
+	font-size: 40px
+	padding: 10px
+	&:hover
+		color: #00C99C
