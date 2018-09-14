@@ -33,7 +33,6 @@ class App extends React.Component {
   keyDownUpdate = (e) => {
     var key = e.keyCode
     if (key === 13){
-      // console.log("WTFWTF")
       e.preventDefault();
     }
   }
@@ -43,10 +42,7 @@ class App extends React.Component {
     var text = e.target.innerHTML.replace(/&nbsp;/g,'')
     // console.log('e.target.innerHTML',e.target.innerHTML)
     var ref = {9:9,16:16,17:17,18:18,37:37,38:38,39:39,40:40,91:91,93:93}
-    if (ref[key]){
-      return;
-    }
-    else {
+    if (!ref[key]){
       this.setState({text:text})
     }
   }
