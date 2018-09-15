@@ -5,6 +5,7 @@ import { faHome } from '@fortawesome/free-solid-svg-icons/faHome';
 import { faPlusSquare } from '@fortawesome/free-solid-svg-icons/faPlusSquare';
 import { faSave } from '@fortawesome/free-solid-svg-icons/faSave';
 import Writing from './writing.js'
+import {ipcRenderer} from 'electron'
 
 class App extends React.Component {
   constructor(props){
@@ -51,6 +52,17 @@ class App extends React.Component {
 
   handleClick = () => {
     console.log('clicked');
+  }
+
+  componentDidMount(){
+    ipcRenderer.send("mainWindowLoaded")
+    ipcRenderer.on("resultSent", function(evt, result){
+      let resultEl = document.getElementById("result");
+      console.log('result',result);
+      for(var i = 0; i < result.length;i++){
+        console.log('something');
+      }
+    });
   }
 
   render() {
