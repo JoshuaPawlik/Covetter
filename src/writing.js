@@ -20,21 +20,21 @@ class Writing extends React.Component {
               {/* Number */}
               <h3 className="p-num" onClick={this.props.handleClick}>1</h3>
               {/* Textfield */}
-              <div contentEditable type='text' className="textarea" placeholder="Paragraph 1" onKeyUp={this.props.keyUpUpdate} onKeyDown={this.props.keyDownUpdate}></div>
+              <div contentEditable type='text' className="textarea" placeholder="Paragraph 1" onKeyUp={this.props.keyUpUpdate} onKeyDown={(e) => this.props.keyDownUpdate(e,1)}></div>
 
             </div>
             <div className="paragraph">
               {/* Number */}
               <h3 className="p-num" onClick={this.props.handleClick}>2</h3>
               {/* Textfield */}
-              <div contentEditable type='text' className="textarea" placeholder="Paragraph 2" onKeyUp={this.props.keyUpUpdate} onKeyDown={this.props.keyDownUpdate}></div>
+              <div contentEditable type='text' className="textarea" placeholder="Paragraph 2" onKeyUp={this.props.keyUpUpdate} onKeyDown={(e) => this.props.keyDownUpdate(e,2)}></div>
 
             </div>
             <div className="paragraph">
               {/* Number */}
               <h3 className="p-num" onClick={this.props.handleClick}>3</h3>
               {/* Textfield */}
-              <div contentEditable type='text' className="textarea" placeholder="Paragraph 3" onKeyUp={this.props.keyUpUpdate} onKeyDown={this.props.keyDownUpdate}></div>
+              <div contentEditable type='text' className="textarea" placeholder="Paragraph 3" onKeyUp={this.props.keyUpUpdate} onKeyDown={(e) => this.props.keyDownUpdate(e,3)}></div>
 
             </div>
           </div>

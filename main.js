@@ -46,16 +46,21 @@ app.on('ready', () => {
 
   createWindow();
   ipcMain.on("mainWindowLoaded", function () {
-		knex('users').insert({userName:'hihihihihi'}).catch(() => {
-			console.log('wtf!!!!!')
-		})
-		let result = knex.select("userName").from("users")
+		// knex('files').insert({title:'hihihihihi'}).catch((e) => {
+		// 	console.log('error',e)
+		// })
+		let result = knex.select("*").from("files")
 		result.then(function(rows){
 			console.log('rows',rows);
 			mainWindow.webContents.send("resultSent", rows);
 		})
 	});
 
+})
+
+
+ipcMain.on('save',() => {
+	console.log('Ive heard your on save back here');
 })
 
 // Quit when all windows are closed.
