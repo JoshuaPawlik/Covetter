@@ -66,22 +66,14 @@ class App extends React.Component {
 
   //Updates state as you type
   keyUpUpdate = (e, num) => {
-    console.log('num',num);
-    console.log('e.target',e.target.innerHTML);
     var key = e.keyCode
     var text = e.target.innerHTML.replace(/&nbsp;/g,'')
-    // console.log('e.target.innerHTML',e.target.innerHTML)
-    var ref = {9:9,16:16,17:17,18:18,37:37,38:38,39:39,40:40,91:91,93:93}
+    var ref = {9:9,13:13,16:16,17:17,18:18,27:27,37:37,38:38,39:39,40:40,91:91,93:93}
     if (!ref[key]){
-      if (num === 0){
-        this.setState({title:text})
-      }
-      else {
-        // let par = `par${num}`
-        this.setState({par1:text})
-      }
+      //Don't try to console.log state because it shows
+      //the updated content in state late
+      this.setState({[`par${num}`]:text})
     }
-    console.log('this.state',this.state)
   }
 
 
@@ -119,34 +111,34 @@ class App extends React.Component {
           <div className='prevContainer'>
 
             <div className="tinyPrev">
-              {this.state.text}
+              {this.state.par1}
             </div>
             <div className="tinyPrev">
-              {this.state.text}
+              {this.state.par1}
             </div>
             <div className="tinyPrev">
-              {this.state.text}
+              {this.state.par1}
             </div>
             <div className="tinyPrev">
-              {this.state.text}
+              {this.state.par1}
             </div>
             <div className="tinyPrev">
-              {this.state.text}
+              {this.state.par1}
             </div>
             <div className="tinyPrev">
-              {this.state.text}
+              {this.state.par1}
             </div>
             <div className="tinyPrev">
-              {this.state.text}
+              {this.state.par1}
             </div>
             <div className="tinyPrev">
-              {this.state.text}
+              {this.state.par1}
             </div>
             <div className="tinyPrev">
-              {this.state.text}
+              {this.state.par1}
             </div>
             <div className="tinyPrev">
-              {this.state.text}
+              {this.state.par1}
             </div>
 
           </div>

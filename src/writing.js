@@ -20,21 +20,21 @@ class Writing extends React.Component {
               {/* Number */}
               <h3 className="p-num" onClick={this.props.handleClick}>1</h3>
               {/* Textfield */}
-              <div contentEditable type='text' className="textarea" placeholder="Paragraph 1" onKeyUp={(e) => this.props.keyUpUpdate(e,1)} onKeyDown={(e) => this.props.keyDownUpdate(e,1)}></div>
+              <div contentEditable type='text' className="textarea" placeholder="Paragraph 1" onKeyUp={(e) => this.props.keyUpUpdate(e,1)} onKeyDown={this.props.keyDownUpdate}></div>
 
             </div>
             <div className="paragraph">
               {/* Number */}
               <h3 className="p-num" onClick={this.props.handleClick}>2</h3>
               {/* Textfield */}
-              <div contentEditable type='text' className="textarea" placeholder="Paragraph 2" onKeyUp={(e) => this.props.keyUpUpdate(e,2)} onKeyDown={(e) => this.props.keyDownUpdate(e,2)}></div>
+              <div contentEditable type='text' className="textarea" placeholder="Paragraph 2" onKeyUp={(e) => this.props.keyUpUpdate(e,2)} onKeyDown={ this.props.keyDownUpdate}></div>
 
             </div>
             <div className="paragraph">
               {/* Number */}
               <h3 className="p-num" onClick={this.props.handleClick}>3</h3>
               {/* Textfield */}
-              <div contentEditable type='text' className="textarea" placeholder="Paragraph 3" onKeyUp={(e) => this.props.keyUpUpdate(e,3)} onKeyDown={(e) => this.props.keyDownUpdate(e,3)}></div>
+              <div contentEditable type='text' className="textarea" placeholder="Paragraph 3" onKeyUp={(e) => this.props.keyUpUpdate(e,3)} onKeyDown={ this.props.keyDownUpdate}></div>
 
             </div>
           </div>
