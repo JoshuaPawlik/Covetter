@@ -43,6 +43,7 @@ class App extends React.Component {
     let par2 = this.state.par2;
     let par3 = this.state.par3;
     ipcRenderer.send('save',title,par1,par2,par3);
+    this.getFiles()
   }
 
   preview = () => {
@@ -80,19 +81,32 @@ class App extends React.Component {
       //the updated content in state late
       this.setState({[`par${num}`]:text})
     }
+    console.log(this.state.par1)
   }
 
+  getFiles = () => {
+    ipcRenderer.send("mainWindowLoaded")
+    ipcRenderer.on("filesSent", (evt, files) => {
+      this.setState({files:files})
+    })
+  }
 
 
   handleClick = () => {
     console.log('clicked');
   }
 
+  // whoa = () => {
+  //   console.log('ran!!')
+  //   this.setState({title:'IPC IS WORKING'})
+  // }
+
   componentDidMount(){
-    ipcRenderer.send("mainWindowLoaded")
-    ipcRenderer.on("filesSent", (evt, files) => {
-      this.setState({files:files})
-    })
+    // ipcRenderer.send('wow')
+    // ipcRenderer.on('whoa', () => {
+    //   this.whoa();
+    // })
+    this.getFiles();
   }
 
   render() {
@@ -106,6 +120,7 @@ class App extends React.Component {
         <div className="writingCom">
           {this.state.mode === 'editing' &&
           <Writing
+            state={this.state}
             keyUpUpdate={this.keyUpUpdate.bind(this)}  keyDownUpdate={this.keyDownUpdate.bind(this)} handleClick={this.handleClick.bind(this)}
             updateTitle={this.updateTitle.bind(this)}
           />}

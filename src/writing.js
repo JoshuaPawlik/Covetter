@@ -13,7 +13,7 @@ class Writing extends React.Component {
       <div className="writing">
         <div className="content">
           <div className="titleDiv">
-            <input type='text' placeholder="Type your title" className="title" onChange={(e) => this.props.updateTitle(e)}></input>
+            <input type='text' placeholder={`${this.props.state.title}`} className="title" onChange={(e) => this.props.updateTitle(e)}></input>
           </div>
           <div className='paragraphs'>
             <div className="paragraph">
@@ -27,7 +27,7 @@ class Writing extends React.Component {
               {/* Number */}
               <h3 className="p-num" onClick={this.props.handleClick}>2</h3>
               {/* Textfield */}
-              <div contentEditable type='text' className="textarea" placeholder="Paragraph 2" onKeyUp={(e) => this.props.keyUpUpdate(e,2)} onKeyDown={ this.props.keyDownUpdate}></div>
+              <div contentEditable type='text' className="textarea" placeholder="Paragraph 2" onKeyUp={(e) => this.props.keyUpUpdate(e,2)} onKeyDown={ this.props.keyDownUpdate}>{this.props.state.par1}</div>
 
             </div>
             <div className="paragraph">

@@ -5,12 +5,12 @@
 // Modules to control application life and create native browser window
 const {app, BrowserWindow, ipcMain} = require('electron')
 // require('electron-reload')(__dirname);
-
+var path = require('path');
 var knex = require("knex")({
-	client: "sqlite3",
-	connection: {
-		filename: "./database.sqlite"
-	}
+  client: "sqlite3",
+  connection: {
+    filename: path.join(app.getAppPath(), '/database.sqlite')
+  }
 });
 
 // Keep a global reference of the window object, if you don't, the window will
@@ -24,7 +24,7 @@ function createWindow () {
   mainWindow.loadFile('index.html')
 
   // Open the DevTools.
-  // mainWindow.webContents.openDevTools()
+  mainWindow.webContents.openDevTools()
 
   mainWindow.once('ready-to-show', () => {
     mainWindow.show();
@@ -43,6 +43,15 @@ function createWindow () {
 // initialization and is ready to create browser windows.
 // Some APIs can only be used after this event occurs.
 app.on('ready', () => {
+	knex.migrate.latest()
+	.then(() => {
+	  console.log('ran a migration')
+	})
+
+  // knex('files').insert({title:'hihihihihi'}).catch((e) => {
+  // 	console.log('error',e)
+  // })
+
 
   createWindow();
   ipcMain.on("mainWindowLoaded", function () {
@@ -55,6 +64,10 @@ app.on('ready', () => {
 			mainWindow.webContents.send("filesSent", rows);
 		})
 	});
+
+	// ipcMain.on('wow', () => {
+	// 	mainWindow.webContents.send('whoa')
+	// })
 
 })
 

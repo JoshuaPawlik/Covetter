@@ -10,8 +10,7 @@ const config = {
   context: __dirname,
   entry: [
     'babel-polyfill',
-    path.resolve(__dirname, './renderer.js'),
-    `webpack-hot-middleware/client?path=http://localhost:${port}/__webpack_hmr`,
+    path.resolve(__dirname, './renderer.js')
   ],
   target: 'electron-renderer',
   output: {
@@ -51,7 +50,7 @@ const config = {
     ]
   },
   plugins: [
-    new webpack.HotModuleReplacementPlugin(),
+    // new webpack.HotModuleReplacementPlugin(),
   ]
 };
 
