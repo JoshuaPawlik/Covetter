@@ -59,8 +59,9 @@ app.on('ready', () => {
 })
 
 
-ipcMain.on('save',() => {
+ipcMain.on('save',(evt,title,par1,par2,par3) => {
 	console.log('Ive heard your on save back here');
+	console.log('otherstuff',title,par1,par2,par3);
 })
 
 // Quit when all windows are closed.

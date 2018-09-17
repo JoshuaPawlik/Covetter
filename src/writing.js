@@ -13,28 +13,28 @@ class Writing extends React.Component {
       <div className="writing">
         <div className="content">
           <div className="titleDiv">
-            <input type='text' placeholder="Type your title" className="title"></input>
+            <input type='text' placeholder="Type your title" className="title" onChange={(e) => this.props.updateTitle(e)}></input>
           </div>
           <div className='paragraphs'>
             <div className="paragraph">
               {/* Number */}
               <h3 className="p-num" onClick={this.props.handleClick}>1</h3>
               {/* Textfield */}
-              <div contentEditable type='text' className="textarea" placeholder="Paragraph 1" onKeyUp={this.props.keyUpUpdate} onKeyDown={(e) => this.props.keyDownUpdate(e,1)}></div>
+              <div contentEditable type='text' className="textarea" placeholder="Paragraph 1" onKeyUp={(e) => this.props.keyUpUpdate(e,1)} onKeyDown={(e) => this.props.keyDownUpdate(e,1)}></div>
 
             </div>
             <div className="paragraph">
               {/* Number */}
               <h3 className="p-num" onClick={this.props.handleClick}>2</h3>
               {/* Textfield */}
-              <div contentEditable type='text' className="textarea" placeholder="Paragraph 2" onKeyUp={this.props.keyUpUpdate} onKeyDown={(e) => this.props.keyDownUpdate(e,2)}></div>
+              <div contentEditable type='text' className="textarea" placeholder="Paragraph 2" onKeyUp={(e) => this.props.keyUpUpdate(e,2)} onKeyDown={(e) => this.props.keyDownUpdate(e,2)}></div>
 
             </div>
             <div className="paragraph">
               {/* Number */}
               <h3 className="p-num" onClick={this.props.handleClick}>3</h3>
               {/* Textfield */}
-              <div contentEditable type='text' className="textarea" placeholder="Paragraph 3" onKeyUp={this.props.keyUpUpdate} onKeyDown={(e) => this.props.keyDownUpdate(e,3)}></div>
+              <div contentEditable type='text' className="textarea" placeholder="Paragraph 3" onKeyUp={(e) => this.props.keyUpUpdate(e,3)} onKeyDown={(e) => this.props.keyDownUpdate(e,3)}></div>
 
             </div>
           </div>

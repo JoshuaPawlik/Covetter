@@ -32,6 +32,7 @@ class App extends React.Component {
   onSave = () =>{
     console.log('clicked onSave');
     let title = this.state.title;
+    console.log('title',title)
     let par1 = this.state.par1;
     let par2 = this.state.par2;
     let par3 = this.state.par3;
@@ -43,27 +44,44 @@ class App extends React.Component {
   }
 
 
+  //This function is mostly to prevent
+  //unwanted actions
   keyDownUpdate = (e,num) => {
     var key = e.keyCode
-    // console.log('key',key)
-    // console.log('num',num)
     if (key === 13){
       e.preventDefault();
     }
     else if (key === 9){
+      //attempting to prevent the tab key from
+      //switching textfields and to insert a double space
       e.preventDefault();
       this.setState({text:this.state.text + '\xa0\xa0'})
     }
   }
 
-  keyUpUpdate = (e) => {
+  updateTitle = (e) => {
+    let value = e.target.value;
+    this.setState({title: value});
+  }
+
+  //Updates state as you type
+  keyUpUpdate = (e, num) => {
+    console.log('num',num);
+    console.log('e.target',e.target.innerHTML);
     var key = e.keyCode
-    var text = e.target.innerHTML.replace(/&nbsp;/g,'').toString();
+    var text = e.target.innerHTML.replace(/&nbsp;/g,'')
     // console.log('e.target.innerHTML',e.target.innerHTML)
     var ref = {9:9,16:16,17:17,18:18,37:37,38:38,39:39,40:40,91:91,93:93}
     if (!ref[key]){
-      this.setState({text:text})
+      if (num === 0){
+        this.setState({title:text})
+      }
+      else {
+        // let par = `par${num}`
+        this.setState({par1:text})
+      }
     }
+    console.log('this.state',this.state)
   }
 
 
@@ -92,7 +110,11 @@ class App extends React.Component {
           <FontAwesomeIcon icon={faPlusSquare} className="home-icon" onClick={this.handleClick.bind(this)} />
         </div>
         <div className="writingCom">
-          {this.state.mode === 'editing' && <Writing keyUpUpdate={this.keyUpUpdate.bind(this)}  keyDownUpdate={this.keyDownUpdate.bind(this)} handleClick={this.handleClick.bind(this)}/>}
+          {this.state.mode === 'editing' &&
+          <Writing
+            keyUpUpdate={this.keyUpUpdate.bind(this)}  keyDownUpdate={this.keyDownUpdate.bind(this)} handleClick={this.handleClick.bind(this)}
+            updateTitle={this.updateTitle.bind(this)}
+          />}
 
           <div className='prevContainer'>
 
