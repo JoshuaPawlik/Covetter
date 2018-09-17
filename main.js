@@ -49,10 +49,10 @@ app.on('ready', () => {
 		// knex('files').insert({title:'hihihihihi'}).catch((e) => {
 		// 	console.log('error',e)
 		// })
-		let result = knex.select("*").from("files")
-		result.then(function(rows){
+		let files = knex.select("*").from("files")
+		files.then(function(rows){
 			console.log('rows',rows);
-			mainWindow.webContents.send("resultSent", rows);
+			mainWindow.webContents.send("filesSent", rows);
 		})
 	});
 
