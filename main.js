@@ -19,7 +19,7 @@ let mainWindow
 
 function createWindow () {
   // Create the browser window.
-  mainWindow = new BrowserWindow({width: 800, height: 800,show:false})
+  mainWindow = new BrowserWindow({width: 1200, height: 800,show:false})
   // and load the index.html of the app.
   mainWindow.loadFile('index.html')
 
@@ -60,8 +60,10 @@ app.on('ready', () => {
 
 
 ipcMain.on('save',(evt,title,par1,par2,par3) => {
-	console.log('Ive heard your on save back here');
-	console.log('otherstuff',title,par1,par2,par3);
+	console.log('stuff',title,par1,par2,par3);
+	knex('files').insert({title:title,par1:par1,par2:par2,par3:par3}).then(()=> {console.log('inserted into database')}).catch((e) => {
+		console.error(e)
+	})
 })
 
 // Quit when all windows are closed.
