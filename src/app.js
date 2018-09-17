@@ -29,6 +29,9 @@ class App extends React.Component {
   //Switch Paragraph
   //open file
 
+  // TODO:
+  //Make sure database works correctly when packaging with asar again
+
 
   newFile = () => {
 
