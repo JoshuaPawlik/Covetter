@@ -3,4 +3,5 @@ module.exports = {
   	connection: {
   		filename: `${__dirname}/database.sqlite`
   	}
+    // useNullasDefault: true
 };

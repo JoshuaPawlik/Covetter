@@ -10,7 +10,8 @@ var knex = require("knex")({
   client: "sqlite3",
   connection: {
     filename: path.join(app.getAppPath(), '/database.sqlite')
-  }
+  },
+  // useNullasDefault: true
 });
 
 // Keep a global reference of the window object, if you don't, the window will
@@ -46,7 +47,9 @@ app.on('ready', () => {
 	knex.migrate.latest()
 	.then(() => {
 	  console.log('ran a migration')
-	})
+	}).catch((err) =>{
+    console.log('err!!!!!!!!!!',err)
+  })
 
   // knex('files').insert({title:'hihihihihi'}).catch((e) => {
   // 	console.log('error',e)
