@@ -4,7 +4,7 @@ import '../styles.sass';
 
 const Files = (props) => (
   <div className="files">
-   {props.files.map((file, index) => <File title={file.title} par1={file.par1} key={index}/>
+   {props.files.map((file, index) => <File title={file.title} par1={file.par1} key={index} onFileClick={props.onFileClick}/>
  )}
   </div>
 );

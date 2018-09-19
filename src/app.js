@@ -14,6 +14,7 @@ class App extends React.Component {
     this.state = {
       mode: "editing",
       title: "",
+      titleClass:"title",
       par1: "",
       par2: "",
       par3: ""
@@ -38,13 +39,17 @@ class App extends React.Component {
   }
 
   onSave = () =>{
-    console.log('clicked onSave');
     let title = this.state.title;
-    console.log('title',title)
     let par1 = this.state.par1;
-    console.log('par1',par1)
     let par2 = this.state.par2;
     let par3 = this.state.par3;
+    if (title === ""){
+      this.setState({titleClass:"title red-shake"})
+      setTimeout(() => {
+        this.setState({titleClass:'title'});
+      }, 1000);
+      return;
+    }
     ipcRenderer.send('save',title,par1,par2,par3);
     this.getFiles()
   }
@@ -99,6 +104,10 @@ class App extends React.Component {
     console.log('clicked');
   }
 
+  onFileClick = (title) => {
+    console.log(title,'title')
+  }
+
   // whoa = () => {
   //   console.log('ran!!')
   //   this.setState({title:'IPC IS WORKING'})
@@ -129,7 +138,7 @@ class App extends React.Component {
           />}
 
           <div className='prevContainer'>
-            {this.state.files ? <Files files={this.state.files}/>: null}
+            {this.state.files ? <Files onFileClick={this.onFileClick.bind(this)} files={this.state.files}/>: null}
           </div>
         </div>
       </div>

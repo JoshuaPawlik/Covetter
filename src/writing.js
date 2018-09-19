@@ -13,7 +13,7 @@ class Writing extends React.Component {
       <div className="writing">
         <div className="content">
           <div className="titleDiv">
-            <input type='text' placeholder={"Title"} className="title" onChange={(e) => this.props.updateTitle(e)}></input>
+            <input type='text' placeholder={"Title"} className={this.props.state.titleClass} onChange={(e) => this.props.updateTitle(e)}></input>
           </div>
           <div className='paragraphs'>
             <div className="paragraph">
