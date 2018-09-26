@@ -34,9 +34,6 @@ class App extends React.Component {
   // TODO:
   //Make sure database works correctly when packaging with asar again
 
-  //store html in database but show only text when displayed
-
-
   newFile = () => {
 
   }
@@ -76,7 +73,6 @@ class App extends React.Component {
   //This function is mostly to prevent
   //unwanted actions
   keyDownUpdate = (e,num) => {
-    console.log(e.target);
     var key = e.keyCode
     if (key === 13){
       e.preventDefault();
