@@ -57,14 +57,11 @@ app.on('ready', () => {
 
 
   createWindow();
-  ipcMain.on("mainWindowLoaded", function () {
-		// knex('files').insert({title:'hihihihihi'}).catch((e) => {
-		// 	console.log('error',e)
-		// })
+  ipcMain.on("needFiles", function () {
 		let files = knex.select("*").from("files")
-		files.then(function(rows){
-			console.log('rows',rows);
-			mainWindow.webContents.send("filesSent", rows);
+		files.then(function(files){
+			console.log('files',files);
+			mainWindow.webContents.send("filesSent", files);
 		})
 	});
 

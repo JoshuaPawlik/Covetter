@@ -13,11 +13,12 @@ class App extends React.Component {
     super(props)
     this.state = {
       mode: "editing",
+      id:"",
       title: "",
-      titleClass:"title",
       par1: "",
       par2: "",
-      par3: ""
+      par3: "",
+      titleClass:"title"
     }
   }
 
@@ -33,6 +34,8 @@ class App extends React.Component {
   // TODO:
   //Make sure database works correctly when packaging with asar again
 
+  //store html in database but show only text when displayed
+
 
   newFile = () => {
 
@@ -43,6 +46,7 @@ class App extends React.Component {
     let par1 = this.state.par1;
     let par2 = this.state.par2;
     let par3 = this.state.par3;
+    //Checks to make sure Title is not empty
     if (title === ""){
       this.setState({titleClass:"title red-shake"})
       setTimeout(() => {
@@ -50,7 +54,17 @@ class App extends React.Component {
       }, 1000);
       return;
     }
+    //TODO:
+    //update file if exists
+    //save new file if it not exists
+    this.save(title,par1,par2,par3);
+    this.getFiles();
+  }
+
+
+  save = (title,par1,par2,par3) => {
     ipcRenderer.send('save',title,par1,par2,par3);
+    //retrieve files
     this.getFiles()
   }
 
@@ -62,6 +76,7 @@ class App extends React.Component {
   //This function is mostly to prevent
   //unwanted actions
   keyDownUpdate = (e,num) => {
+    console.log(e.target);
     var key = e.keyCode
     if (key === 13){
       e.preventDefault();
@@ -82,18 +97,18 @@ class App extends React.Component {
   //Updates state as you type
   keyUpUpdate = (e, num) => {
     var key = e.keyCode
-    var text = e.target.innerHTML.replace(/&nbsp;/g,'')
+    // var text = e.target.innerHTML.replace(/&nbsp;/g,'')
+    var text = e.target.innerHTML
     var ref = {9:9,13:13,16:16,17:17,18:18,27:27,37:37,38:38,39:39,40:40,93:93}
     if (!ref[key]){
       //Don't try to console.log state because it shows
       //the updated content in state late
       this.setState({[`par${num}`]:text})
     }
-    console.log(this.state.par1)
   }
 
   getFiles = () => {
-    ipcRenderer.send("mainWindowLoaded")
+    ipcRenderer.send("needFiles")
     ipcRenderer.on("filesSent", (evt, files) => {
       this.setState({files:files})
     })
