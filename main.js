@@ -38,6 +38,7 @@ function createWindow () {
     // when you should delete the corresponding element.
     mainWindow = null
   })
+
 }
 
 // This method will be called when Electron has finished
@@ -71,10 +72,16 @@ app.on('ready', () => {
 
 })
 
-
 ipcMain.on('save',(evt,title,par1,par2,par3) => {
-	console.log('stuff',title,par1,par2,par3);
+	// console.log('stuff',title,par1,par2,par3);
 	knex('files').insert({title:title,par1:par1,par2:par2,par3:par3}).then(()=> {console.log('inserted into database')}).catch((e) => {
+		console.error(e)
+	})
+})
+
+ipcMain.on('update',(evt,id,title,par1,par2,par3) => {
+	console.log('stuff',id,title,par1,par2,par3);
+	knex('files').where('id','=',id).update({title:title,par1:par1,par2:par2,par3:par3}).then(()=> {console.log('updated file')}).catch((e) => {
 		console.error(e)
 	})
 })

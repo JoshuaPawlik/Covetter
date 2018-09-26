@@ -33,14 +33,22 @@ class App extends React.Component {
   //Make sure database works correctly when packaging with asar again
 
   newFile = () => {
+    this.setState({id:""});
     //clear all textfields
     //make sure you're not editing another existing file
   }
 
-
-  setActiveFile = () => {
+  setActiveFile = (file) => {
+    console.log('file',file)
+    this.setState({id:file.id})
     //set all textfield values
     // make sure all changes are updated to active file
+  }
+
+  onFileClick = (file) => {
+    // console.log(title,'title')
+    // console.log('file',file)
+    this.setActiveFile(file)
   }
 
   onSave = () =>{
@@ -48,10 +56,12 @@ class App extends React.Component {
     // let par1 = this.state.par1;
     // let par2 = this.state.par2;
     // let par3 = this.state.par3;
+    let id = this.state.id;
     let title = document.getElementById('title').value;
     let par1 = document.getElementById('par1').innerHTML;
     let par2 = document.getElementById('par2').innerHTML;
     let par3 = document.getElementById('par3').innerHTML;
+
     //Checks to make sure Title is not empty
     if (title === ""){
       this.setState({titleClass:"title red-shake"})
@@ -60,11 +70,19 @@ class App extends React.Component {
       }, 1000);
       return;
     }
-    //TODO:
+    //------------------------------------
+
     //update file if exists
-    //save new file if it not exists
-    this.save(title,par1,par2,par3);
-    this.getFiles();
+    if (this.state.id){
+      ipcRenderer.send('update',id,title,par1,par2,par3);
+      this.getFiles();
+    }
+    else {
+      //save new file if it not exists
+      this.save(title,par1,par2,par3);
+      this.getFiles();
+    }
+    //------------------------------------
   }
 
 
@@ -118,10 +136,6 @@ class App extends React.Component {
   handleClick = () => {
     document.getElementById('par1').innerHTML = "Changed value"
     // console.log('clicked');
-  }
-
-  onFileClick = (title) => {
-    console.log(title,'title')
   }
 
   // whoa = () => {
