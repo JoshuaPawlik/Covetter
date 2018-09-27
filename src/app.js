@@ -39,10 +39,14 @@ class App extends React.Component {
   }
 
   setActiveFile = (file) => {
-    console.log('file',file)
+    // console.log('file',file)
+    // make sure all changes are updated to active file
     this.setState({id:file.id})
     //set all textfield values
-    // make sure all changes are updated to active file
+    document.getElementById('title').value = file.title;
+    document.getElementById('par1').innerHTML = file.par1
+    let par2 = document.getElementById('par2').innerHTML = file.par2;
+    let par3 = document.getElementById('par3').innerHTML = file.par3;
   }
 
   onFileClick = (file) => {
