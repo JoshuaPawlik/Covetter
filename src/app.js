@@ -34,6 +34,11 @@ class App extends React.Component {
 
   newFile = () => {
     this.setState({id:""});
+    document.getElementById('title').value = "";
+    document.getElementById('par1').innerHTML = "";
+    document.getElementById('par2').innerHTML = "";
+    document.getElementById('par3').innerHTML = "";
+
     //clear all textfields
     //make sure you're not editing another existing file
   }
@@ -41,6 +46,8 @@ class App extends React.Component {
   setActiveFile = (file) => {
     // console.log('file',file)
     // make sure all changes are updated to active file
+
+
     this.setState({id:file.id})
     //set all textfield values
     document.getElementById('title').value = file.title;
@@ -104,10 +111,9 @@ class App extends React.Component {
       e.preventDefault();
     }
     else if (key === 9){
-      //attempting to prevent the tab key from
-      //switching textfields and to insert a double space
+      //prevents tab key from switching textfields
       e.preventDefault();
-      this.setState({text:this.state.text + '\xa0\xa0'})
+      //TODO: Add functionality to insert a double space on tab press
     }
   }
 
