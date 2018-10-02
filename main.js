@@ -86,6 +86,16 @@ ipcMain.on('update',(evt,id,title,par1,par2,par3) => {
 	})
 })
 
+ipcMain.on('delete',(evt,id) => {
+	// console.log('id in delete',id);
+	knex('files').where('id','=',id).delete().then(()=> {
+    console.log('deleted file')
+    mainWindow.webContents.send("fileDeleted");
+}).catch((e) => {
+		console.error(e)
+	})
+})
+
 // Quit when all windows are closed.
 app.on('window-all-closed', function () {
   // On OS X it is common for applications and their menu bar

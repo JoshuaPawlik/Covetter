@@ -4,6 +4,7 @@ import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 import { faHome } from '@fortawesome/free-solid-svg-icons/faHome';
 import { faPlusSquare } from '@fortawesome/free-solid-svg-icons/faPlusSquare';
 import { faSave } from '@fortawesome/free-solid-svg-icons/faSave';
+import { faFill } from '@fortawesome/free-solid-svg-icons/faFill';
 import Writing from './writing.js'
 import {ipcRenderer} from 'electron'
 import Files from './files'
@@ -32,6 +33,13 @@ class App extends React.Component {
   // TODO:
   //Make sure database works correctly when packaging with asar again
 
+   fillDumbyData = () => {
+    for (var i = 0; i < 10;i++){
+      this.save(`Test${i+1}`,'','','');
+    }
+    this.getFiles();
+  }
+
   newFile = () => {
     this.setState({id:""});
     document.getElementById('title').value = "";
@@ -45,8 +53,8 @@ class App extends React.Component {
 
   setActiveFile = (file) => {
     // console.log('file',file)
+    console.log('setActiveFile Ran')
     // make sure all changes are updated to active file
-
 
     this.setState({id:file.id})
     //set all textfield values
@@ -100,7 +108,7 @@ class App extends React.Component {
   save = (title,par1,par2,par3) => {
     ipcRenderer.send('save',title,par1,par2,par3);
     //retrieve files
-    this.getFiles()
+    // this.getFiles()
   }
 
   //This function is mostly to prevent
@@ -148,10 +156,14 @@ class App extends React.Component {
     // console.log('clicked');
   }
 
-  // whoa = () => {
-  //   console.log('ran!!')
-  //   this.setState({title:'IPC IS WORKING'})
-  // }
+  deleteFile = (e,id) => {
+    e.stopPropagation();
+    ipcRenderer.send('delete',id);
+    ipcRenderer.on('fileDeleted',(evt) =>{
+      this.getFiles()
+      this.newFile();
+    })
+  }
 
   componentDidMount(){
     // ipcRenderer.send('wow')
@@ -168,6 +180,7 @@ class App extends React.Component {
           {/* <FontAwesomeIcon icon={faHome} className="home-icon" onClick={this.handleClick.bind(this)} /> */}
           <FontAwesomeIcon icon={faSave} className="home-icon" onClick={this.onSave.bind(this)} />
           <FontAwesomeIcon icon={faPlusSquare} className="home-icon" onClick={this.newFile.bind(this)} />
+          <FontAwesomeIcon icon={faFill} className="home-icon" onClick={this.fillDumbyData.bind(this)} />
         </div>
         <div className="writingCom">
           <Writing
@@ -177,7 +190,10 @@ class App extends React.Component {
           />
 
           <div className='prevContainer'>
-            {this.state.files ? <Files onFileClick={this.onFileClick.bind(this)} files={this.state.files}/>: null}
+            {this.state.files ? <Files onFileClick={this.onFileClick.bind(this)}
+              files={this.state.files}
+              deleteFile={this.deleteFile.bind(this)}
+            />: null}
           </div>
         </div>
       </div>
