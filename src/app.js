@@ -18,7 +18,8 @@ class App extends React.Component {
       par1: "",
       par2: "",
       par3: "",
-      titleClass:"title"
+      titleClass:"title",
+      activeFile:null
     }
   }
 
@@ -60,8 +61,8 @@ class App extends React.Component {
     //set all textfield values
     document.getElementById('title').value = file.title;
     document.getElementById('par1').innerHTML = file.par1
-    let par2 = document.getElementById('par2').innerHTML = file.par2;
-    let par3 = document.getElementById('par3').innerHTML = file.par3;
+    document.getElementById('par2').innerHTML = file.par2;
+    document.getElementById('par3').innerHTML = file.par3;
   }
 
   onFileClick = (file) => {
@@ -161,7 +162,9 @@ class App extends React.Component {
     ipcRenderer.send('delete',id);
     ipcRenderer.on('fileDeleted',(evt) =>{
       this.getFiles()
-      this.newFile();
+      if (id === this.state.id){
+        this.newFile();
+      }
     })
   }
 
@@ -193,6 +196,7 @@ class App extends React.Component {
             {this.state.files ? <Files onFileClick={this.onFileClick.bind(this)}
               files={this.state.files}
               deleteFile={this.deleteFile.bind(this)}
+              state = {this.state}
             />: null}
           </div>
         </div>

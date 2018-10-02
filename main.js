@@ -1,7 +1,7 @@
 // const electron = require('electron');
 // const app = electron.app;
 // const BrowserWindow = electron.BrowserWindow;
-
+const EventEmitter = require('events');
 // Modules to control application life and create native browser window
 const {app, BrowserWindow, ipcMain} = require('electron')
 // require('electron-reload')(__dirname);
@@ -61,15 +61,10 @@ app.on('ready', () => {
   ipcMain.on("needFiles", function () {
 		let files = knex.select("*").from("files")
 		files.then(function(files){
-			console.log('files',files);
+			// console.log('files',files);
 			mainWindow.webContents.send("filesSent", files);
 		})
 	});
-
-	// ipcMain.on('wow', () => {
-	// 	mainWindow.webContents.send('whoa')
-	// })
-
 })
 
 ipcMain.on('save',(evt,title,par1,par2,par3) => {
@@ -78,6 +73,7 @@ ipcMain.on('save',(evt,title,par1,par2,par3) => {
 		console.error(e)
 	})
 })
+
 
 ipcMain.on('update',(evt,id,title,par1,par2,par3) => {
 	console.log('stuff',id,title,par1,par2,par3);
@@ -94,6 +90,8 @@ ipcMain.on('delete',(evt,id) => {
 }).catch((e) => {
 		console.error(e)
 	})
+  console.log(ipcMain.listenerCount('delete'))
+  console.log(ipcMain.listenerCount('filesSent'))
 })
 
 // Quit when all windows are closed.
