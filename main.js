@@ -45,6 +45,7 @@ function createWindow () {
 // initialization and is ready to create browser windows.
 // Some APIs can only be used after this event occurs.
 app.on('ready', () => {
+  ipcMain.setMaxListeners(20);
 	knex.migrate.latest()
 	.then(() => {
 	  console.log('ran a migration')
@@ -55,7 +56,7 @@ app.on('ready', () => {
   // knex('files').insert({title:'hihihihihi'}).catch((e) => {
   // 	console.log('error',e)
   // })
-
+  console.log(ipcMain.getMaxListeners())
 
   createWindow();
   ipcMain.on("needFiles", function () {
@@ -90,8 +91,10 @@ ipcMain.on('delete',(evt,id) => {
 }).catch((e) => {
 		console.error(e)
 	})
-  console.log(ipcMain.listenerCount('delete'))
-  console.log(ipcMain.listenerCount('filesSent'))
+  // console.log(ipcMain.listenerCount('delete'))
+  // console.log(ipcMain.listenerCount('filesSent'))
+  console.log(mainWindow.webContents.listenerCount('fileDeleted'));
+  console.log(mainWindow.webContents.listenerCount('filesSent'));
 })
 
 // Quit when all windows are closed.

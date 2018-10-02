@@ -34,24 +34,28 @@ class App extends React.Component {
   // TODO:
   //Make sure database works correctly when packaging with asar again
 
+    componentDidMount(){
+      this.getFiles();
+      ipcRenderer.setMaxListeners(20);
+    }
+    //------------------------------------
    fillDumbyData = () => {
     for (var i = 0; i < 10;i++){
       this.save(`Test${i+1}`,'','','');
     }
     this.getFiles();
   }
-
+  //------------------------------------
   newFile = () => {
+    //make sure you're not editing another existing file
     this.setState({id:""});
+    //clear all textfields
     document.getElementById('title').value = "";
     document.getElementById('par1').innerHTML = "";
     document.getElementById('par2').innerHTML = "";
     document.getElementById('par3').innerHTML = "";
-
-    //clear all textfields
-    //make sure you're not editing another existing file
   }
-
+  //------------------------------------
   setActiveFile = (file) => {
     // console.log('file',file)
     console.log('setActiveFile Ran')
@@ -64,18 +68,14 @@ class App extends React.Component {
     document.getElementById('par2').innerHTML = file.par2;
     document.getElementById('par3').innerHTML = file.par3;
   }
-
+  //------------------------------------
   onFileClick = (file) => {
     // console.log(title,'title')
     // console.log('file',file)
     this.setActiveFile(file)
   }
-
+  //------------------------------------
   onSave = () =>{
-    // let title = this.state.title;
-    // let par1 = this.state.par1;
-    // let par2 = this.state.par2;
-    // let par3 = this.state.par3;
     let id = this.state.id;
     let title = document.getElementById('title').value;
     let par1 = document.getElementById('par1').innerHTML;
@@ -90,7 +90,6 @@ class App extends React.Component {
       }, 1000);
       return;
     }
-    //------------------------------------
 
     //update file if exists
     if (this.state.id){
@@ -102,16 +101,38 @@ class App extends React.Component {
       this.save(title,par1,par2,par3);
       this.getFiles();
     }
-    //------------------------------------
   }
-
-
+  //------------------------------------
   save = (title,par1,par2,par3) => {
     ipcRenderer.send('save',title,par1,par2,par3);
     //retrieve files
     // this.getFiles()
   }
-
+  //------------------------------------
+  getFiles = () => {
+    ipcRenderer.send("needFiles")
+    ipcRenderer.on("filesSent", (evt, files) => {
+      this.setState({files:files})
+    })
+  }
+  //------------------------------------
+  // someFunc = (e) => {
+  //   console.log('e',e);
+  //   console.log('filesSent listenerCount',ipcRenderer.listenerCount('filesSent'));
+  //   // ipcRenderer.removeListener('filesSent')
+  // }
+  //------------------------------------
+  deleteFile = (e,id) => {
+    e.stopPropagation();
+    ipcRenderer.send('delete',id);
+    ipcRenderer.on('fileDeleted',(evt) =>{
+      this.getFiles()
+      if (id === this.state.id){
+        this.newFile();
+      }
+    })
+  }
+  //------------------------------------
   //This function is mostly to prevent
   //unwanted actions
   keyDownUpdate = (e,num) => {
@@ -125,12 +146,12 @@ class App extends React.Component {
       //TODO: Add functionality to insert a double space on tab press
     }
   }
-
+  //------------------------------------
   updateTitle = (e) => {
     let value = e.target.value;
     this.setState({title: value});
   }
-
+  //------------------------------------
   //Updates state as you type
   keyUpUpdate = (e, num) => {
     var key = e.keyCode
@@ -143,37 +164,10 @@ class App extends React.Component {
       this.setState({[`par${num}`]:text})
     }
   }
-
-  getFiles = () => {
-    ipcRenderer.send("needFiles")
-    ipcRenderer.on("filesSent", (evt, files) => {
-      this.setState({files:files})
-    })
-  }
-
-
+  //------------------------------------
   handleClick = () => {
     document.getElementById('par1').innerHTML = "Changed value"
     // console.log('clicked');
-  }
-
-  deleteFile = (e,id) => {
-    e.stopPropagation();
-    ipcRenderer.send('delete',id);
-    ipcRenderer.on('fileDeleted',(evt) =>{
-      this.getFiles()
-      if (id === this.state.id){
-        this.newFile();
-      }
-    })
-  }
-
-  componentDidMount(){
-    // ipcRenderer.send('wow')
-    // ipcRenderer.on('whoa', () => {
-    //   this.whoa();
-    // })
-    this.getFiles();
   }
 
   render() {
