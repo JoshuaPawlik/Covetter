@@ -165,7 +165,7 @@ class App extends React.Component {
     return (
       <div className="app">
         <div className="sidebar">
-          <FontAwesomeIcon icon={faHome} className="home-icon" onClick={this.handleClick.bind(this)} />
+          {/* <FontAwesomeIcon icon={faHome} className="home-icon" onClick={this.handleClick.bind(this)} /> */}
           <FontAwesomeIcon icon={faSave} className="home-icon" onClick={this.onSave.bind(this)} />
           <FontAwesomeIcon icon={faPlusSquare} className="home-icon" onClick={this.newFile.bind(this)} />
         </div>
