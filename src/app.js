@@ -24,12 +24,9 @@ class App extends React.Component {
   }
 
   // TODO: Add functions for:
-  //new/create file
   //Add Paragraph
-  //Delete file
   //Add alternate paragraph
   //Switch Paragraph
-  //open file
 
   // TODO:
   //Make sure database works correctly when packaging with asar again
@@ -70,6 +67,9 @@ class App extends React.Component {
   }
   //------------------------------------
   onFileClick = (file) => {
+    if (document.getElementById('title').value !== ""){
+      this.onSave();
+    }
     // console.log(title,'title')
     // console.log('file',file)
     this.setActiveFile(file)

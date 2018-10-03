@@ -60,7 +60,7 @@ app.on('ready', () => {
 
   createWindow();
   ipcMain.on("needFiles", function () {
-		let files = knex.select("*").from("files")
+		let files = knex.select("*").from("files").orderBy('id','desc')
 		files.then(function(files){
 			// console.log('files',files);
 			mainWindow.webContents.send("filesSent", files);
