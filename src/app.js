@@ -179,20 +179,28 @@ class App extends React.Component {
           <FontAwesomeIcon icon={faPlusSquare} className="home-icon" onClick={this.newFile.bind(this)} />
           <FontAwesomeIcon icon={faFill} className="home-icon" onClick={this.fillDumbyData.bind(this)} />
         </div>
-        <div className="writingCom">
-          <Writing
-            state={this.state}
-            keyUpUpdate={this.keyUpUpdate.bind(this)}  keyDownUpdate={this.keyDownUpdate.bind(this)} handleClick={this.handleClick.bind(this)}
-            updateTitle={this.updateTitle.bind(this)}
-          />
-
-          <div className='prevContainer'>
-            {this.state.files ? <Files onFileClick={this.onFileClick.bind(this)}
-              files={this.state.files}
-              deleteFile={this.deleteFile.bind(this)}
-              state = {this.state}
-            />: null}
-          </div>
+          <div className="writingCom">
+            <div className="whole">
+              <Writing
+                state={this.state}
+                keyUpUpdate={this.keyUpUpdate.bind(this)}  keyDownUpdate={this.keyDownUpdate.bind(this)} handleClick={this.handleClick.bind(this)}
+                updateTitle={this.updateTitle.bind(this)}
+              />
+              <div className="editBar">
+                {/* <h1>TESTING</h1>
+                <h1>TESTING</h1>
+                <h1>TESTING</h1>
+                <h1>TESTING</h1>
+                <h1>TESTING</h1> */}
+              </div>
+            </div>
+            <div className='prevContainer'>
+              {this.state.files ? <Files onFileClick={this.onFileClick.bind(this)}
+                files={this.state.files}
+                deleteFile={this.deleteFile.bind(this)}
+                state = {this.state}
+              />: null}
+            </div>
         </div>
       </div>
     );

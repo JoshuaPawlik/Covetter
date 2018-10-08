@@ -48,11 +48,34 @@ body
 .writingCom
 	display: flex
 	flex-direction: column
-	justify-content: space-between
+	justify-content: space-around
 	width: 100vw
 	height: 100vh
 	margin: 0
 	padding: 0
+	// font-family: 
+
+	.whole
+		display: flex
+		height: 100%
+		flex-direction: row
+		font-size: 0
+		// background: red
+		margin: 0
+		padding: 0
+
+		.editBar
+			display: flex
+			flex-direction: column
+			width: 30vw
+			padding: 50px
+			// background-color: #1A1A1A
+			// background-color: black
+			box-sizing: border-box
+			border: 3px solid #1A1A1A
+			border-radius: 4px
+			color: white
+
 	.prevContainer
 		display: flex
 		flex-direction: row
@@ -121,6 +144,8 @@ body
 		height: 80vh
 		width: 100%
 		overflow: auto
+		margin: 0
+		padding: 0
 		.content
 			display: flex
 			align-items: center
@@ -187,7 +212,6 @@ body
 					&:empty:not(:focus):before
 						content: attr(placeholder)
 						color: #757575
-
 
 .red-shake
 	// color: red
