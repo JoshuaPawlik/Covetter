@@ -19,7 +19,8 @@ class App extends React.Component {
       par2: "",
       par3: "",
       titleClass:"title",
-      activeFile:null
+      activeFile:null,
+      values: {}
     }
   }
 
@@ -97,9 +98,9 @@ class App extends React.Component {
       this.getFiles();
     }
     else {
-      //save new file if it not exists
+      //save new file if it does not exists
       this.save(title,par1,par2,par3);
-      this.getFiles();
+      this.getFiles(true)
     }
   }
   //------------------------------------
@@ -165,6 +166,13 @@ class App extends React.Component {
     }
   }
   //------------------------------------
+  //Doesn't work because once the value is changed the first time it no
+  //no longer has brackets around it
+  replace = (e) => {
+    let value = e.target.value;
+    document.getElementById('par1').innerHTML = document.getElementById('par1').innerHTML.replace(/{[^>]*}/g, `${value}`);
+  }
+  //------------------------------------
   handleClick = () => {
     document.getElementById('par1').innerHTML = "Changed value"
     // console.log('clicked');
@@ -187,11 +195,9 @@ class App extends React.Component {
                 updateTitle={this.updateTitle.bind(this)}
               />
               <div className="editBar">
-                {/* <h1>TESTING</h1>
-                <h1>TESTING</h1>
-                <h1>TESTING</h1>
-                <h1>TESTING</h1>
-                <h1>TESTING</h1> */}
+                <input onChange={(e) => {
+                  this.replace(e)
+                }}></input>
               </div>
             </div>
             <div className='prevContainer'>
