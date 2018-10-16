@@ -6,8 +6,10 @@ import { faPlusSquare } from '@fortawesome/free-solid-svg-icons/faPlusSquare';
 import { faSave } from '@fortawesome/free-solid-svg-icons/faSave';
 import { faFill } from '@fortawesome/free-solid-svg-icons/faFill';
 import Writing from './writing.js'
-import {ipcRenderer} from 'electron'
+import {ipcRenderer, remote} from 'electron'
 import Files from './files'
+
+import main from '../main.js'
 
 class App extends React.Component {
   constructor(props){
@@ -30,6 +32,7 @@ class App extends React.Component {
   //Switch Paragraph
 
   // TODO:
+  // Change all send events to functions imported from main.js
   //Make sure database works correctly when packaging with asar again
 
     componentDidMount(){
@@ -39,7 +42,7 @@ class App extends React.Component {
     //------------------------------------
    fillDumbyData = () => {
     for (var i = 0; i < 10;i++){
-      this.save(`Test${i+1}`,'','','');
+      this.save(`Test ${i+1}`,'','','');
     }
     this.getFiles();
   }
