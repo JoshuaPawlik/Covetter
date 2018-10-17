@@ -9,7 +9,7 @@ import Writing from './writing.js'
 import {ipcRenderer, remote} from 'electron'
 import Files from './files'
 
-import main from '../main.js'
+// import main from '../main.js'
 
 class App extends React.Component {
   constructor(props){
@@ -79,7 +79,7 @@ class App extends React.Component {
     this.setActiveFile(file)
   }
   //------------------------------------
-  onSave = () =>{
+  onSave = () => {
     let id = this.state.id;
     let title = document.getElementById('title').value;
     let par1 = document.getElementById('par1').innerHTML;
@@ -120,12 +120,6 @@ class App extends React.Component {
     })
   }
   //------------------------------------
-  // someFunc = (e) => {
-  //   console.log('e',e);
-  //   console.log('filesSent listenerCount',ipcRenderer.listenerCount('filesSent'));
-  //   // ipcRenderer.removeListener('filesSent')
-  // }
-  //------------------------------------
   deleteFile = (e,id) => {
     e.stopPropagation();
     ipcRenderer.send('delete',id);
@@ -161,6 +155,7 @@ class App extends React.Component {
     var key = e.keyCode
     // var text = e.target.innerHTML.replace(/&nbsp;/g,'')
     var text = e.target.innerHTML
+    console.log('innerHTML', text)
     var ref = {9:9,13:13,16:16,17:17,18:18,27:27,37:37,38:38,39:39,40:40,93:93}
     if (!ref[key]){
       //Don't try to console.log state because it shows
@@ -173,7 +168,10 @@ class App extends React.Component {
   //no longer has brackets around it
   replace = (e) => {
     let value = e.target.value;
-    document.getElementById('par1').innerHTML = document.getElementById('par1').innerHTML.replace(/{[^>]*}/g, `${value}`);
+    document.getElementById('title').value = document.getElementById('title').value.replace(/{[^>]*}/g, `{${value}}`);
+    document.getElementById('par1').innerHTML = document.getElementById('par1').innerHTML.replace(/{[^>]*}/g, `{${value}}`);
+    document.getElementById('par2').innerHTML = document.getElementById('par2').innerHTML.replace(/{[^>]*}/g, `{${value}}`);
+    document.getElementById('par3').innerHTML = document.getElementById('par3').innerHTML.replace(/{[^>]*}/g, `{${value}}`);
   }
   //------------------------------------
   handleClick = () => {
