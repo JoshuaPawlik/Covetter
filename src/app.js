@@ -27,11 +27,14 @@ class App extends React.Component {
   }
 
   // TODO: Add functions for:
+  // select : select all of a specific word
   //Add Paragraph
   //Add alternate paragraph
   //Switch Paragraph
 
   // TODO:
+  //NEED TO REPLACE LISTENERS WITH MODULE.EXPORTS FUNCTIONS FROM MAIN.JS
+  //LISTENERS ARE CAUSING FUNCTION TO BE CALLED MORE THAN ONCE
   // Change all send events to functions imported from main.js
   //Make sure database works correctly when packaging with asar again
 
@@ -58,8 +61,8 @@ class App extends React.Component {
   }
   //------------------------------------
   setActiveFile = (file) => {
+    console.log('In setActiveFile')
     console.log('file in setActiveFile',file)
-    console.log('setActiveFile Ran')
     // make sure all changes are updated to active file
 
     this.setState({id:file.id})
@@ -98,14 +101,16 @@ class App extends React.Component {
     }
 
     //update file if exists
+    console.log('this.state.id', this.state.id)
     if (this.state.id){
       ipcRenderer.send('update',id,title,par1,par2,par3);
       this.getFiles();
     }
     else {
       //save new file if it does not exists
+      console.log('-----in else statement-----')
       this.save(title,par1,par2,par3);
-      this.getFiles(true)
+      this.getFiles("Yes")
     }
   }
   //------------------------------------
@@ -116,10 +121,16 @@ class App extends React.Component {
   }
   //------------------------------------
   getFiles = (tf) => {
+    let count = 0;
+    console.log('count',count);
     ipcRenderer.send("needFiles")
     ipcRenderer.on("filesSent", (evt, files) => {
-      if (tf){
+      if (tf === "Yes"){
+        count++;
+        console.log('count in YES',count);
+        console.log('---In getFiles true---')
         this.setState({files:files}, () => {
+          console.log('setting state to first file')
           this.setActiveFile(this.state.files[0])
         })
       }
