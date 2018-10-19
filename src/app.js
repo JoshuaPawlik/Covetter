@@ -58,7 +58,7 @@ class App extends React.Component {
   }
   //------------------------------------
   setActiveFile = (file) => {
-    // console.log('file',file)
+    console.log('file in setActiveFile',file)
     console.log('setActiveFile Ran')
     // make sure all changes are updated to active file
 
@@ -71,11 +71,13 @@ class App extends React.Component {
   }
   //------------------------------------
   onFileClick = (file) => {
+    console.log('onFileClick ran')
     if (document.getElementById('title').value !== ""){
+      //this invoke is causing setActiveFile to run twice
       this.onSave();
     }
     // console.log(title,'title')
-    // console.log('file',file)
+    console.log('file in onFileClick',file)
     this.setActiveFile(file)
   }
   //------------------------------------
@@ -113,10 +115,17 @@ class App extends React.Component {
     // this.getFiles()
   }
   //------------------------------------
-  getFiles = () => {
+  getFiles = (tf) => {
     ipcRenderer.send("needFiles")
     ipcRenderer.on("filesSent", (evt, files) => {
-      this.setState({files:files})
+      if (tf){
+        this.setState({files:files}, () => {
+          this.setActiveFile(this.state.files[0])
+        })
+      }
+      else {
+        this.setState({files:files});
+      }
     })
   }
   //------------------------------------
