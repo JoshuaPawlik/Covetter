@@ -68,6 +68,14 @@ app.on('ready', () => {
 	});
 })
 
+const sendFiles = exports.sendFiles = () => {
+    let files = knex.select("*").from("files").orderBy('id','desc')
+    files.then(function(files){
+      // console.log('files',files);
+      mainWindow.webContents.send("filesSent", files);
+    })
+}
+
 ipcMain.on('save',(evt,title,par1,par2,par3) => {
 	// console.log('stuff',title,par1,par2,par3);
 	knex('files').insert({title:title,par1:par1,par2:par2,par3:par3}).then(()=> {console.log('inserted into database')}).catch((e) => {
@@ -113,3 +121,6 @@ app.on('activate', function () {
     createWindow()
   }
 })
+
+
+// module.exports = "HEY THERE"

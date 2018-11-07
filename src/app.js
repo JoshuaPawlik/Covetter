@@ -6,10 +6,18 @@ import { faPlusSquare } from '@fortawesome/free-solid-svg-icons/faPlusSquare';
 import { faSave } from '@fortawesome/free-solid-svg-icons/faSave';
 import { faFill } from '@fortawesome/free-solid-svg-icons/faFill';
 import Writing from './writing.js'
-import {ipcRenderer, remote} from 'electron'
+import {remote, ipcRenderer} from 'electron'
 import Files from './files'
 
-// import main from '../main.js'
+
+// const main = require('../main')
+// const path = require('path');
+// import main from `${path.resolve('main.js')}`
+
+// import main from '../main'
+
+// console.log('remote',remote.require(''))
+// const main = require(remote.require('../main.js'))
 
 class App extends React.Component {
   constructor(props){
@@ -33,14 +41,18 @@ class App extends React.Component {
   //Switch Paragraph
 
   // TODO:
+
+  // Add variable input to select all of a given word
   //NEED TO REPLACE LISTENERS WITH MODULE.EXPORTS FUNCTIONS FROM MAIN.JS
   //LISTENERS ARE CAUSING FUNCTION TO BE CALLED MORE THAN ONCE
   // Change all send events to functions imported from main.js
   //Make sure database works correctly when packaging with asar again
 
     componentDidMount(){
+      // console.log(main)
+      // main.sendFiles();
       this.getFiles();
-      ipcRenderer.setMaxListeners(20);
+      // ipcRenderer.setMaxListeners(20);
     }
     //------------------------------------
    fillDumbyData = () => {
@@ -216,7 +228,7 @@ class App extends React.Component {
                 updateTitle={this.updateTitle.bind(this)}
               />
               <div className="editBar">
-                <input onChange={(e) => {
+                <input className="variableInput" placeholder="Company" onChange={(e) => {
                   this.replace(e)
                 }}></input>
               </div>
