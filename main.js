@@ -68,6 +68,11 @@ app.on('ready', () => {
 	});
 })
 
+
+const testMain = exports.testMain = () =>{
+  console.log("DOES IT WORK!!!!!")
+}
+
 const sendFiles = exports.sendFiles = () => {
     let files = knex.select("*").from("files").orderBy('id','desc')
     files.then(function(files){

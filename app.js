@@ -1,23 +1,19 @@
 import React, {Component} from 'react';
-import '../styles.sass';
+import './styles.sass';
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 import { faHome } from '@fortawesome/free-solid-svg-icons/faHome';
 import { faPlusSquare } from '@fortawesome/free-solid-svg-icons/faPlusSquare';
 import { faSave } from '@fortawesome/free-solid-svg-icons/faSave';
 import { faFill } from '@fortawesome/free-solid-svg-icons/faFill';
-import Writing from './writing.js'
+import Writing from './src/writing.js'
 import {remote, ipcRenderer} from 'electron'
-import Files from './files'
+import Files from './src/files'
 
+// import path from 'path'
 
-// const main = require('../main')
-// const path = require('path');
-// import main from `${path.resolve('main.js')}`
-
-// import main from '../main'
-
-// console.log('remote',remote.require(''))
-// const main = require(remote.require('../main.js'))
+// The only way I was able to get this to work was to move my app.js into
+// the same location as main.js
+const main = remote.require('./main.js')
 
 class App extends React.Component {
   constructor(props){
@@ -49,9 +45,10 @@ class App extends React.Component {
   //Make sure database works correctly when packaging with asar again
 
     componentDidMount(){
-      // console.log(main)
+      console.log('main',main)
       // main.sendFiles();
       this.getFiles();
+      // console.log('main',main)
       // ipcRenderer.setMaxListeners(20);
     }
     //------------------------------------
@@ -60,6 +57,10 @@ class App extends React.Component {
       this.save(`Test ${i+1}`,'','','');
     }
     this.getFiles();
+  }
+  //------------------------------------
+  testMain = () => {
+    main.testMain()
   }
   //------------------------------------
   newFile = () => {
@@ -218,7 +219,7 @@ class App extends React.Component {
           {/* <FontAwesomeIcon icon={faHome} className="home-icon" onClick={this.handleClick.bind(this)} /> */}
           <FontAwesomeIcon icon={faSave} className="home-icon" onClick={this.onSave.bind(this)} />
           <FontAwesomeIcon icon={faPlusSquare} className="home-icon" onClick={this.newFile.bind(this)} />
-          <FontAwesomeIcon icon={faFill} className="home-icon" onClick={this.fillDumbyData.bind(this)} />
+          <FontAwesomeIcon icon={faFill} className="home-icon" onClick={this.testMain.bind(this)} />
         </div>
           <div className="writingCom">
             <div className="whole">

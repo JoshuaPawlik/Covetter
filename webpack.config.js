@@ -26,7 +26,8 @@ const config = {
         loader: 'babel-loader',
         include: [
           path.join(__dirname, 'src'),
-          path.join(__dirname, 'renderer.js')
+          path.join(__dirname, 'renderer.js'),
+          path.join(__dirname, 'app.js')
         ],
         exclude: /node_modules/,
         query: {
