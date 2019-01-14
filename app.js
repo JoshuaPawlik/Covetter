@@ -116,7 +116,7 @@ class App extends React.Component {
     //update file if exists
     console.log('this.state.id', this.state.id)
     if (this.state.id){
-      ipcRenderer.send('update',id,title,par1,par2,par3);
+      main.update(id,title,par1,par2,par3);
       this.getFiles();
     }
     else {

@@ -83,7 +83,7 @@ ipcMain.on('save',(evt,title,par1,par2,par3) => {
 })
 
 
-ipcMain.on('update',(evt,id,title,par1,par2,par3) => {
+const update = exports.update = ((id,title,par1,par2,par3) => {
 	console.log('stuff',id,title,par1,par2,par3);
 	knex('files').where('id','=',id).update({title:title,par1:par1,par2:par2,par3:par3}).then(()=> {console.log('updated file')}).catch((e) => {
 		console.error(e)
@@ -121,10 +121,7 @@ app.on('activate', function () {
   }
 })
 
-
-// module.exports = "HEY THERE"
-
-
+// Get Files
 // ipcMain.on("needFiles", function () {
 //   let files = knex.select("*").from("files").orderBy('id','desc')
 //   files.then(function(files){
@@ -134,6 +131,7 @@ app.on('activate', function () {
 // });
 
 
+//Delete
 // ipcMain.on('delete',(evt,id) => {
 // 	// console.log('id in delete',id);
 // 	knex('files').where('id','=',id).delete().then(()=> {
@@ -146,4 +144,14 @@ app.on('activate', function () {
 //   // console.log(ipcMain.listenerCount('filesSent'))
 //   console.log(mainWindow.webContents.listenerCount('fileDeleted'));
 //   console.log(mainWindow.webContents.listenerCount('filesSent'));
+// })
+
+
+
+//Update
+// ipcMain.on('update',(evt,id,title,par1,par2,par3) => {
+// 	console.log('stuff',id,title,par1,par2,par3);
+// 	knex('files').where('id','=',id).update({title:title,par1:par1,par2:par2,par3:par3}).then(()=> {console.log('updated file')}).catch((e) => {
+// 		console.error(e)
+// 	})
 // })
