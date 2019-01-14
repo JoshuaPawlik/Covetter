@@ -59,13 +59,6 @@ app.on('ready', () => {
   console.log(ipcMain.getMaxListeners())
 
   createWindow();
-  ipcMain.on("needFiles", function () {
-		let files = knex.select("*").from("files").orderBy('id','desc')
-		files.then(function(files){
-			// console.log('files',files);
-			mainWindow.webContents.send("filesSent", files);
-		})
-	});
 })
 
 
@@ -78,6 +71,7 @@ const sendFiles = exports.sendFiles = () => {
     files.then(function(files){
       // console.log('files',files);
       mainWindow.webContents.send("filesSent", files);
+      // return files;
     })
 }
 
@@ -96,18 +90,18 @@ ipcMain.on('update',(evt,id,title,par1,par2,par3) => {
 	})
 })
 
-ipcMain.on('delete',(evt,id) => {
-	// console.log('id in delete',id);
+const deleteFile = exports.deleteFile = ((id) => {
+	console.log('id in delete',id);
 	knex('files').where('id','=',id).delete().then(()=> {
     console.log('deleted file')
     mainWindow.webContents.send("fileDeleted");
-}).catch((e) => {
-		console.error(e)
+  }).catch((e) => {
+		console.error('ERROR!!!!!!!!!',e)
 	})
   // console.log(ipcMain.listenerCount('delete'))
   // console.log(ipcMain.listenerCount('filesSent'))
-  console.log(mainWindow.webContents.listenerCount('fileDeleted'));
-  console.log(mainWindow.webContents.listenerCount('filesSent'));
+  // console.log(mainWindow.webContents.listenerCount('fileDeleted'));
+  // console.log(mainWindow.webContents.listenerCount('filesSent'));
 })
 
 // Quit when all windows are closed.
@@ -129,3 +123,27 @@ app.on('activate', function () {
 
 
 // module.exports = "HEY THERE"
+
+
+// ipcMain.on("needFiles", function () {
+//   let files = knex.select("*").from("files").orderBy('id','desc')
+//   files.then(function(files){
+//     // console.log('files',files);
+//     mainWindow.webContents.send("filesSent", files);
+//   })
+// });
+
+
+// ipcMain.on('delete',(evt,id) => {
+// 	// console.log('id in delete',id);
+// 	knex('files').where('id','=',id).delete().then(()=> {
+//     console.log('deleted file')
+//     mainWindow.webContents.send("fileDeleted");
+// }).catch((e) => {
+// 		console.error(e)
+// 	})
+//   // console.log(ipcMain.listenerCount('delete'))
+//   // console.log(ipcMain.listenerCount('filesSent'))
+//   console.log(mainWindow.webContents.listenerCount('fileDeleted'));
+//   console.log(mainWindow.webContents.listenerCount('filesSent'));
+// })

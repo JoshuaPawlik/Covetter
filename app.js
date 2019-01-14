@@ -136,7 +136,8 @@ class App extends React.Component {
   getFiles = (tf) => {
     let count = 0;
     console.log('count',count);
-    ipcRenderer.send("needFiles")
+    main.sendFiles()
+    // ipcRenderer.send("needFiles")
     ipcRenderer.on("filesSent", (evt, files) => {
       if (tf === "Yes"){
         count++;
@@ -154,8 +155,10 @@ class App extends React.Component {
   }
   //------------------------------------
   deleteFile = (e,id) => {
+    console.log('deleteFile clicked',e,id);
     e.stopPropagation();
-    ipcRenderer.send('delete',id);
+    main.deleteFile(id);
+    // ipcRenderer.send('delete',id);
     ipcRenderer.on('fileDeleted',(evt) =>{
       this.getFiles()
       if (id === this.state.id){
