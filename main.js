@@ -75,7 +75,7 @@ const sendFiles = exports.sendFiles = () => {
     })
 }
 
-ipcMain.on('save',(evt,title,par1,par2,par3) => {
+const save = exports.save = ((title,par1,par2,par3) => {
 	// console.log('stuff',title,par1,par2,par3);
 	knex('files').insert({title:title,par1:par1,par2:par2,par3:par3}).then(()=> {console.log('inserted into database')}).catch((e) => {
 		console.error(e)
@@ -152,6 +152,14 @@ app.on('activate', function () {
 // ipcMain.on('update',(evt,id,title,par1,par2,par3) => {
 // 	console.log('stuff',id,title,par1,par2,par3);
 // 	knex('files').where('id','=',id).update({title:title,par1:par1,par2:par2,par3:par3}).then(()=> {console.log('updated file')}).catch((e) => {
+// 		console.error(e)
+// 	})
+// })
+
+//Save
+// ipcMain.on('save',(evt,title,par1,par2,par3) => {
+// 	// console.log('stuff',title,par1,par2,par3);
+// 	knex('files').insert({title:title,par1:par1,par2:par2,par3:par3}).then(()=> {console.log('inserted into database')}).catch((e) => {
 // 		console.error(e)
 // 	})
 // })

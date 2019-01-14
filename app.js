@@ -128,7 +128,7 @@ class App extends React.Component {
   }
   //------------------------------------
   save = (title,par1,par2,par3) => {
-    ipcRenderer.send('save',title,par1,par2,par3);
+    main.save(title,par1,par2,par3);
     //retrieve files
     // this.getFiles()
   }
