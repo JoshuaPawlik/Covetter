@@ -66,11 +66,11 @@ const testMain = exports.testMain = () =>{
   console.log("DOES IT WORK!!!!!")
 }
 
-const sendFiles = exports.sendFiles = () => {
+const sendFiles = exports.sendFiles = (tf) => {
     let files = knex.select("*").from("files").orderBy('id','desc')
     files.then(function(files){
       // console.log('files',files);
-      mainWindow.webContents.send("filesSent", files);
+      mainWindow.webContents.send("filesSent", files ,tf);
       // return files;
     })
 }
@@ -94,7 +94,7 @@ const deleteFile = exports.deleteFile = ((id) => {
 	console.log('id in delete',id);
 	knex('files').where('id','=',id).delete().then(()=> {
     console.log('deleted file')
-    mainWindow.webContents.send("fileDeleted");
+    mainWindow.webContents.send("fileDeleted",id);
   }).catch((e) => {
 		console.error('ERROR!!!!!!!!!',e)
 	})
