@@ -9,8 +9,6 @@ import Writing from './src/writing.js'
 import {remote, ipcRenderer} from 'electron'
 import Files from './src/files'
 
-// import path from 'path'
-
 // The only way I was able to get this to work was to move my app.js into
 // the same location as main.js
 const main = remote.require('./main.js')
@@ -39,9 +37,6 @@ class App extends React.Component {
   // TODO:
 
   // Add variable input to select all of a given word
-  //NEED TO REPLACE LISTENERS WITH MODULE.EXPORTS FUNCTIONS FROM MAIN.JS
-  //LISTENERS ARE CAUSING FUNCTION TO BE CALLED MORE THAN ONCE
-  // Change all send events to functions imported from main.js
   //Make sure database works correctly when packaging with asar again
 
     componentDidMount(){
@@ -49,7 +44,7 @@ class App extends React.Component {
       this.getFiles();
 
       //Listeners are set here because if they are set inside of functions
-      //they will exceed max listeners and slow down the app
+      //they will exceed max listeners count and slow down the app
 
       ipcRenderer.on("filesSent", (evt, files, tf) => {
         console.log('tf',tf)
@@ -135,7 +130,6 @@ class App extends React.Component {
     }
     else {
       //save new file if it does not exists
-      // console.log('-----in else statement-----')
       console.log('2.New');
       this.save(title,par1,par2,par3);
       this.getFiles(true)
@@ -153,8 +147,6 @@ class App extends React.Component {
   }
   //------------------------------------
   setActiveFile = (file) => {
-    // console.log('In setActiveFile')
-    // console.log('file in setActiveFile',file)
     // make sure all changes are updated to active file
     console.log('file',file)
     console.log('4.setActiveFile')

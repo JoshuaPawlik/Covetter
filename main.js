@@ -25,7 +25,7 @@ function createWindow () {
   mainWindow.loadFile('index.html')
 
   // Open the DevTools.
-  mainWindow.webContents.openDevTools()
+  // mainWindow.webContents.openDevTools()
 
   mainWindow.once('ready-to-show', () => {
     mainWindow.show();
@@ -53,9 +53,6 @@ app.on('ready', () => {
     console.log('err!!!!!!!!!!',err)
   })
 
-  // knex('files').insert({title:'hihihihihi'}).catch((e) => {
-  // 	console.log('error',e)
-  // })
   console.log(ipcMain.getMaxListeners())
 
   createWindow();
@@ -71,7 +68,6 @@ const sendFiles = exports.sendFiles = (tf) => {
     files.then(function(files){
       // console.log('files',files);
       mainWindow.webContents.send("filesSent", files ,tf);
-      // return files;
     })
 }
 
