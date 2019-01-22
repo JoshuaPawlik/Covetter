@@ -219,6 +219,10 @@ class App extends React.Component {
     // console.log('clicked');
   }
 
+  testButton = () => {
+    this.setState({show: !this.state.show});
+  }
+
   render() {
     return (
       <div className="app">
@@ -241,13 +245,16 @@ class App extends React.Component {
                 }}></input>
               </div>
             </div>
-            <div className='prevContainer'>
+            <div>
+              <button onClick={this.testButton.bind(this)}></button>
+            </div>
+            { this.state.show ? <div className='prevContainer'>
               {this.state.files ? <Files onFileClick={this.onFileClick.bind(this)}
                 files={this.state.files}
                 deleteFile={this.deleteFile.bind(this)}
                 state = {this.state}
               />: null}
-            </div>
+            </div> : null }
         </div>
       </div>
     );
