@@ -5,6 +5,8 @@ import { faHome } from '@fortawesome/free-solid-svg-icons/faHome';
 import { faPlusSquare } from '@fortawesome/free-solid-svg-icons/faPlusSquare';
 import { faSave } from '@fortawesome/free-solid-svg-icons/faSave';
 import { faFill } from '@fortawesome/free-solid-svg-icons/faFill';
+import { faAngleDoubleUp } from '@fortawesome/free-solid-svg-icons/faAngleDoubleUp';
+import { faAngleDoubleDown } from '@fortawesome/free-solid-svg-icons/faAngleDoubleDown';
 import Writing from './src/writing.js'
 import {remote, ipcRenderer} from 'electron'
 import Files from './src/files'
@@ -24,13 +26,14 @@ class App extends React.Component {
       par3: "",
       titleClass:"title",
       activeFile:null,
+      button: true,
       values: {}
     }
   }
 
   // TODO: Add functions for:
   // select : select all of a specific word
-  //Add Paragraph
+  //Add Paragraph by making it it's own react component
   //Add alternate paragraph
   //Switch Paragraph
 
@@ -223,6 +226,16 @@ class App extends React.Component {
     this.setState({show: !this.state.show});
   }
 
+  buttonSwitch = () => {
+    this.setState({button: !this.state.button});
+  }
+
+  twoFuncs = () => {
+    this.testButton()
+    this.buttonSwitch()
+    console.log(this.state.button)
+  }
+
   render() {
     return (
       <div className="app">
@@ -245,8 +258,10 @@ class App extends React.Component {
                 }}></input>
               </div>
             </div>
-            <div>
-              <button onClick={this.testButton.bind(this)}></button>
+            <div className="button-div">
+              <button className="prev-button" onClick={this.twoFuncs.bind(this)}>
+                {this.state.button ? <FontAwesomeIcon icon={faAngleDoubleUp} className="up-icon"/> : <FontAwesomeIcon icon={faAngleDoubleDown} className="up-icon"/> }
+              </button>
             </div>
             { this.state.show ? <div className='prevContainer'>
               {this.state.files ? <Files onFileClick={this.onFileClick.bind(this)}

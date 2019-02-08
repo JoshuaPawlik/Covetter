@@ -222,8 +222,26 @@ body
 	animation: shake 1s cubic-bezier(.36,.07,.19,.97) both
 	@include placeholder-color(rgb(209, 0, 0))
 
+$size: 30px
 
-
+.button-div
+	display: flex
+	align-items: center
+	justify-content: center
+	.up-icon
+		color: white
+		font-size: 15px
+	.prev-button
+		outline: none
+		background-color: #1A1A1A
+		height: $size
+		width: $size * 2
+		border: 0px
+		border-top-left-radius: $size * 2
+		border-top-right-radius: $size * 2
+		&:hover
+			.up-icon
+				color: #00C99C
 
 
 
