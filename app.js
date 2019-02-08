@@ -135,7 +135,7 @@ class App extends React.Component {
       //save new file if it does not exists
       console.log('2.New');
       this.save(title,par1,par2,par3);
-      this.getFiles(true)
+      this.getFiles(false)
     }
   }
   //------------------------------------
