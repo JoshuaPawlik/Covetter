@@ -26,7 +26,8 @@ class App extends React.Component {
       par3: "",
       titleClass:"title",
       activeFile:null,
-      button: true,
+      button: false,
+      show: true,
       values: {}
     }
   }
@@ -99,7 +100,7 @@ class App extends React.Component {
     if (document.getElementById('title').value !== ""){
       //this invoke is causing setActiveFile to run twice
       console.log('1.A')
-      this.onSave();
+      this.onSave("autosave");
       this.setActiveFile(file)
     } else {
       console.log('1.B')
@@ -224,10 +225,35 @@ class App extends React.Component {
   //no longer has brackets around it
   replace = (e) => {
     let value = e.target.value;
-    document.getElementById('title').value = document.getElementById('title').value.replace(/{[^>]*}/g, `{${value}}`);
-    document.getElementById('par1').innerHTML = document.getElementById('par1').innerHTML.replace(/{[^>]*}/g, `{${value}}`);
-    document.getElementById('par2').innerHTML = document.getElementById('par2').innerHTML.replace(/{[^>]*}/g, `{${value}}`);
-    document.getElementById('par3').innerHTML = document.getElementById('par3').innerHTML.replace(/{[^>]*}/g, `{${value}}`);
+    const parSelectors = ['par1', 'par2', 'par3'];
+    document.getElementById('title').value = document.getElementById('title').value.replace(/{.*?}/g, `{${value}}`);
+    parSelectors.forEach((selector) => {
+      document.getElementById(selector).innerHTML = document.getElementById(selector).innerHTML.replace(/{.*?}/g, `{${value}}`);
+    })
+  }
+  //------------------------------------
+  select = (e) => {
+    let value = document.getElementById('selectBar').value
+    let re = new RegExp(value, "g")
+    const parSelectors = ['par1', 'par2', 'par3'];
+    console.log('value', value)
+    if (value !== ""){
+      document.getElementById('title').value = document.getElementById('title').value.replace(re, `{${value}}`);
+      parSelectors.forEach((selector) => {
+        document.getElementById(selector).innerHTML = document.getElementById(selector).innerHTML.replace(re, `{${value}}`);
+      })
+    }
+    document.getElementById('selectBar').value = "";
+  }
+  //------------------------------------
+  deselect = (e) => {
+    // let re = new RegExp(value, "g")
+    const parSelectors = ['par1', 'par2', 'par3'];
+    document.getElementById('title').value = document.getElementById('title').value.replace(/\{|\}/g, '');
+    parSelectors.forEach((selector) => {
+      document.getElementById(selector).innerHTML = document.getElementById(selector).innerHTML.replace(/\{|\}/g, '');
+    })
+    document.getElementById('selectBar').value = "";
   }
   //------------------------------------
   handleClick = () => {
@@ -269,6 +295,9 @@ class App extends React.Component {
                 <input className="variableInput" placeholder="Company" onChange={(e) => {
                   this.replace(e)
                 }}></input>
+                <input id="selectBar" className="variableInput" placeholder="Select"></input>
+                <button className="select-button" onClick={this.select.bind(this)}>Select</button>
+                <button className="select-button" onClick={this.deselect.bind(this)}>Deselect</button>
               </div>
             </div>
             <div className="button-div">
