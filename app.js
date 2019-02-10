@@ -50,7 +50,7 @@ class App extends React.Component {
       //they will exceed max listeners count and slow down the app
 
       ipcRenderer.on("filesSent", (evt, files, tf) => {
-        console.log('tf',tf)
+        console.log('tf in listener',tf)
         if (tf){
           this.setState({files:files}, () => {
             console.log('3.B set file to [0]')
@@ -109,7 +109,7 @@ class App extends React.Component {
     // console.log('file in onFileClick',file)
   }
   //------------------------------------
-  onSave = () => {
+  onSave = (param) => {
     let id = this.state.id;
     let title = document.getElementById('title').value;
     let par1 = document.getElementById('par1').innerHTML;
@@ -131,11 +131,24 @@ class App extends React.Component {
       main.update(id,title,par1,par2,par3);
       this.getFiles();
     }
+
+    else if (param === "autosave") {
+      this.save(title,par1,par2,par3);
+      this.getFiles();
+    }
     else {
+      //auto saving the file onFileClick sets the new file to activeFile
+
+
+      //Clicking the save button sets the first file to active so it doesn't duplicate itself
+      //if you switch off
+
+
+
       //save new file if it does not exists
       console.log('2.New');
       this.save(title,par1,par2,par3);
-      this.getFiles(false)
+      this.getFiles(true)
     }
   }
   //------------------------------------
