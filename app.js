@@ -33,14 +33,13 @@ class App extends React.Component {
   }
 
   // TODO: Add functions for:
-  // select : select all of a specific word
   //Add Paragraph by making it it's own react component
   //Add alternate paragraph
   //Switch Paragraph
+  //Add save when clicking newFile
+  //New file adds file to preview container
 
   // TODO:
-
-  // Add variable input to select all of a given word
   //Make sure database works correctly when packaging with asar again
 
     componentDidMount(){
@@ -260,21 +259,21 @@ class App extends React.Component {
     document.getElementById('par1').innerHTML = "Changed value"
     // console.log('clicked');
   }
-
+  //------------------------------------
   testButton = () => {
     this.setState({show: !this.state.show});
   }
-
+  //------------------------------------
   buttonSwitch = () => {
     this.setState({button: !this.state.button});
   }
-
+  //------------------------------------
   twoFuncs = () => {
     this.testButton()
     this.buttonSwitch()
     console.log(this.state.button)
   }
-
+  //------------------------------------
   render() {
     return (
       <div className="app">
@@ -292,12 +291,11 @@ class App extends React.Component {
                 updateTitle={this.updateTitle.bind(this)}
               />
               <div className="editBar">
-                <input className="variableInput" placeholder="Company" onChange={(e) => {
+              <input id="selectBar" className="variableInput" placeholder="Choose a variable"></input>
+              <button className="select-button" onClick={this.select.bind(this)}>Select</button><button className="select-button" onClick={this.deselect.bind(this)}>Deselect</button>
+                <input className="variableInput" placeholder="Company Variable" onChange={(e) => {
                   this.replace(e)
                 }}></input>
-                <input id="selectBar" className="variableInput" placeholder="Select"></input>
-                <button className="select-button" onClick={this.select.bind(this)}>Select</button>
-                <button className="select-button" onClick={this.deselect.bind(this)}>Deselect</button>
               </div>
             </div>
             <div className="button-div">

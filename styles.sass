@@ -8,6 +8,10 @@
 	&:-ms-input-placeholder /* Internet Explorer 10+ */
 			color: $color
 
+$theme-black: #1A1A1A
+$theme-grey: #757575
+$theme-green: #00C99C
+
 html
 	overflow-y: hidden
 	margin: 0
@@ -86,9 +90,15 @@ body
 				border-left: none
       	border-bottom: 2px solid grey
 			.select-button
+				border: none
+				outline: none
+				width: 60%
 				margin: 5px
 				padding: 5px
 				min-width: 26%
+				&:hover
+					// color: white
+					background-color: $theme-green
 
 	.prevContainer
 		display: flex
