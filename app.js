@@ -1,21 +1,21 @@
 import React, { Component } from 'react';
 import './styles.sass';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faHome } from '@fortawesome/free-solid-svg-icons/faHome';
+// import { faHome } from '@fortawesome/free-solid-svg-icons/faHome';
 import { faPlusSquare } from '@fortawesome/free-solid-svg-icons/faPlusSquare';
 import { faSave } from '@fortawesome/free-solid-svg-icons/faSave';
 import { faFill } from '@fortawesome/free-solid-svg-icons/faFill';
 import { faAngleDoubleUp } from '@fortawesome/free-solid-svg-icons/faAngleDoubleUp';
 import { faAngleDoubleDown } from '@fortawesome/free-solid-svg-icons/faAngleDoubleDown';
 import { remote, ipcRenderer } from 'electron';
-import Writing from './src/writing.js';
+import Writing from './src/writing';
 import Files from './src/files';
 
 // The only way I was able to get this to work was to move my app.js into
 // the same location as main.js
 const main = remote.require('./main.js');
 
-class App extends React.Component {
+class App extends Component {
   constructor(props) {
     super(props);
     this.state = {

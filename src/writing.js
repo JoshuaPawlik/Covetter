@@ -1,43 +1,40 @@
-import React, { Component } from 'react';
+import React from 'react';
 import '../styles.sass';
+import Paragraphs from './paragraphs';
 
 class Writing extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      pars: [1, 2, 3],
     };
   }
 
 
   render() {
+    const {
+      updateTitle,
+      handleClick,
+      keyDownUpdate,
+      keyUpUpdate,
+      state,
+    } = this.props;
+
+    const { titleClass } = state;
+
     return (
       <div className="writing">
         <div className="content">
           <div className="titleDiv">
-            <input type="text" id="title" placeholder="Title" className={this.props.state.titleClass} onChange={e => this.props.updateTitle(e)} />
+            <input type="text" id="title" placeholder="Title" className={titleClass} onChange={e => updateTitle(e)} />
           </div>
           <div className="paragraphs">
-            <div className="paragraph">
-              {/* Number */}
-              <h3 className="p-num" onClick={this.props.handleClick}>1</h3>
-              {/* Textfield */}
-              <div contentEditable type="text" id="par1" className="textarea" placeholder="Paragraph 1" onKeyUp={e => this.props.keyUpUpdate(e, 1)} onKeyDown={this.props.keyDownUpdate} />
-
-            </div>
-            <div className="paragraph">
-              {/* Number */}
-              <h3 className="p-num" onClick={this.props.handleClick}>2</h3>
-              {/* Textfield */}
-              <div contentEditable type="text" id="par2" className="textarea" placeholder="Paragraph 2" onKeyUp={e => this.props.keyUpUpdate(e, 2)} onKeyDown={this.props.keyDownUpdate} />
-
-            </div>
-            <div className="paragraph">
-              {/* Number */}
-              <h3 className="p-num" onClick={this.props.handleClick}>3</h3>
-              {/* Textfield */}
-              <div contentEditable type="text" id="par3" className="textarea" placeholder="Paragraph 3" onKeyUp={e => this.props.keyUpUpdate(e, 3)} onKeyDown={this.props.keyDownUpdate} />
-
-            </div>
+            <Paragraphs
+              pars={this.state.pars}
+              handleClick={handleClick.bind(this)}
+              keyUpUpdate={keyUpUpdate.bind(this)}
+              keyDownUpdate={keyDownUpdate.bind(this)}
+            />
           </div>
         </div>
         {' '}
