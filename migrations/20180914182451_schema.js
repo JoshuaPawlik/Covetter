@@ -1,6 +1,6 @@
 
-exports.up = function(knex, Promise) {
-  return knex.schema.createTableIfNotExists('files', function (table) {
+exports.up = function (knex, Promise) {
+  return knex.schema.createTableIfNotExists('files', (table) => {
     table.increments('id').primary();
     // table.string('repoName').unique();
     table.string('title');
@@ -8,9 +8,9 @@ exports.up = function(knex, Promise) {
     table.string('par2');
     table.string('par3');
     // table.unique('id');
-    })
+  });
 };
 
-exports.down = function(knex, Promise) {
-  return knex.schema.dropTable('files')
+exports.down = function (knex, Promise) {
+  return knex.schema.dropTable('files');
 };

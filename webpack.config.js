@@ -1,5 +1,5 @@
 // This file allows us to serve a development version of our JavaScript via a local server
-//and to create a bundled version of our app for production.
+// and to create a bundled version of our app for production.
 
 const path = require('path');
 const webpack = require('webpack');
@@ -16,44 +16,45 @@ const config = {
   target: 'electron-renderer',
   output: {
     filename: 'renderer.bundle.js',
-    path: __dirname + '/bundle',
+    path: `${__dirname}/bundle`,
     publicPath: `http://localhost:${port}/bundle/`,
-    libraryTarget: 'commonjs2'
+    libraryTarget: 'commonjs2',
   },
   module: {
     rules: [
-      { test: /\.js$/,
+      {
+        test: /\.js$/,
         loader: 'babel-loader',
         include: [
           path.join(__dirname, 'src'),
           path.join(__dirname, 'renderer.js'),
-          path.join(__dirname, 'app.js')
+          path.join(__dirname, 'app.js'),
         ],
         exclude: /node_modules/,
         query: {
           presets: ['@babel/preset-react'],
-          plugins: ["transform-class-properties"]
-        }
+          plugins: ['transform-class-properties'],
+        },
       },
       {
         test: /\.s(a|c)ss$/,
         use: [{
-          loader: 'style-loader'
+          loader: 'style-loader',
         }, {
-          loader: 'css-loader'
+          loader: 'css-loader',
         }, {
-          loader: 'sass-loader'
-        }]
+          loader: 'sass-loader',
+        }],
       },
       {
         test: /\.json$/,
-        loader: 'json-loader'
-      }
-    ]
+        loader: 'json-loader',
+      },
+    ],
   },
   plugins: [
     new webpack.HotModuleReplacementPlugin(),
-  ]
+  ],
 };
 
 module.exports = config;
