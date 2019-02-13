@@ -19,7 +19,7 @@ class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      id: null,
+      activeFileId: null,
       title: '',
       par1: '',
       par2: '',
@@ -65,7 +65,7 @@ class App extends Component {
 
     ipcRenderer.on('fileDeleted', (evt, id) => {
       this.getFiles();
-      if (id === this.state.id) {
+      if (id === this.state.activeFileId) {
         this.newFile();
       }
     });
@@ -87,7 +87,7 @@ class App extends Component {
   //------------------------------------
   newFile() {
     // make sure you're not editing another existing file
-    this.setState({ id: '' });
+    this.setState({ activeFileId: '' });
     // clear all textfields
     document.getElementById('title').value = '';
     document.getElementById('par1').innerHTML = '';
@@ -113,7 +113,7 @@ class App extends Component {
 
   //------------------------------------
   onSave(param) {
-    const id = this.state.id;
+    const { activeFileId } = this.state;
     const title = document.getElementById('title').value;
     const par1 = document.getElementById('par1').innerHTML;
     const par2 = document.getElementById('par2').innerHTML;
@@ -129,9 +129,9 @@ class App extends Component {
     }
 
     // update file if exists
-    if (this.state.id) {
+    if (activeFileId) {
       console.log('2.Update');
-      main.update(id, title, par1, par2, par3);
+      main.update(activeFileId, title, par1, par2, par3);
       this.getFiles();
     } else if (param === 'autosave') {
       this.save(title, par1, par2, par3);
@@ -165,7 +165,7 @@ class App extends Component {
     // make sure all changes are updated to active file
     console.log('file', file);
     console.log('4.setActiveFile');
-    this.setState({ id: file.id });
+    this.setState({ activeFileId: file.id });
     // set all textfield values
     document.getElementById('title').value = file.title;
     document.getElementById('par1').innerHTML = file.par1;
@@ -298,7 +298,7 @@ class App extends Component {
         <div className="writingCom">
           <div className="whole">
             <Writing
-              state={this.state}
+              titleClass={this.state.titleClass}
               keyUpUpdate={this.keyUpUpdate.bind(this)}
               keyDownUpdate={this.keyDownUpdate.bind(this)}
               handleClick={this.handleClick.bind(this)}
@@ -330,7 +330,7 @@ class App extends Component {
                   onFileClick={this.onFileClick.bind(this)}
                   files={this.state.files}
                   deleteFile={this.deleteFile.bind(this)}
-                  state={this.state}
+                  activeFileId={this.state.activeFileId}
                 />
               ) : null}
             </div>
