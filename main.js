@@ -1,10 +1,11 @@
+/* eslint no-multi-assign: "off" */
 // const electron = require('electron');
 // const app = electron.app;
 // const BrowserWindow = electron.BrowserWindow;
 const EventEmitter = require('events');
 const fs = require('fs');
 // Modules to control application life and create native browser window
-const { app, BrowserWindow, ipcMain } = require('electron');
+const { app, BrowserWindow, ipcMain, dialog } = require('electron');
 // require('electron-reload')(__dirname);
 const path = require('path');
 const knex = require('knex')({
@@ -41,18 +42,31 @@ function createWindow() {
   });
 }
 
-const testPdf = exports.testPdf = () => {
+const exportPDF = exports.exportPDF = () => {
   console.log('running testPDF');
-  mainWindow.webContents.printToPDF({
-    pageSize: 'Letter'
-  }, (error, data) => {
-    if (error) throw error
-    fs.writeFile(path.join(app.getAppPath(), '/test.pdf'), data, (error) => {
-      if (error) throw error
+
+  const filePath = dialog.showSaveDialog(mainWindow, {
+    title: 'Save PDF',
+    defaultPath: app.getPath('desktop'),
+    filters: [
+      { name: 'PDF Files', extensions: ['pdf'] },
+    ],
+  });
+
+  if (!filePath) {
+    console.log('cancelled out');
+    return;
+  }
+
+  mainWindow.webContents.printToPDF({ pageSize: 'Letter' }, (error, data) => {
+    if (error) throw error;
+    fs.writeFile(filePath, data, (err) => {
+      if (err) throw err;
       console.log('Write PDF successfully.')
     });
   });
 };
+
 
 // This method will be called when Electron has finished
 // initialization and is ready to create browser windows.

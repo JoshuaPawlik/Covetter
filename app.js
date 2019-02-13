@@ -327,7 +327,7 @@ class App extends Component {
                   this.replace(e);
                 }}
               />
-              <button className="select-button" onClick={() => main.testPdf()}>Export PDF</button>
+              <button className="select-button" onClick={() => main.exportPDF()}>Export PDF</button>
             </div>
           </div>
           <div className="button-div">
