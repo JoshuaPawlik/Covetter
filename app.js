@@ -20,15 +20,9 @@ class App extends Component {
     super(props);
     this.state = {
       activeFileId: null,
-      title: '',
-      par1: '',
-      par2: '',
-      par3: '',
       titleClass: 'title',
-      activeFile: null,
       button: false,
       show: true,
-      values: {},
     };
   }
 
