@@ -2,6 +2,7 @@
 // const app = electron.app;
 // const BrowserWindow = electron.BrowserWindow;
 const EventEmitter = require('events');
+const fs = require('fs');
 // Modules to control application life and create native browser window
 const { app, BrowserWindow, ipcMain } = require('electron');
 // require('electron-reload')(__dirname);
@@ -39,6 +40,19 @@ function createWindow() {
     mainWindow = null;
   });
 }
+
+const testPdf = exports.testPdf = () => {
+  console.log('running testPDF');
+  mainWindow.webContents.printToPDF({
+    pageSize: 'Letter'
+  }, (error, data) => {
+    if (error) throw error
+    fs.writeFile('/Users/Joshawesome12/Desktop/Holder/Covetter/print.pdf', data, (error) => {
+      if (error) throw error
+      console.log('Write PDF successfully.')
+    });
+  });
+};
 
 // This method will be called when Electron has finished
 // initialization and is ready to create browser windows.

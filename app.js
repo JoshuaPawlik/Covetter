@@ -285,7 +285,6 @@ class App extends Component {
     this.buttonSwitch();
     console.log(this.state.button);
   }
-
   //------------------------------------
   render() {
     return (
@@ -316,6 +315,7 @@ class App extends Component {
                   this.replace(e);
                 }}
               />
+              <button className="select-button" onClick={() => main.testPdf()}>Export PDF</button>
             </div>
           </div>
           <div className="button-div">
