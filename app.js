@@ -1,3 +1,4 @@
+
 import React, { Component } from 'react';
 import './styles.sass';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -19,17 +20,24 @@ class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      id: null,
-      title: '',
-      par1: '',
-      par2: '',
-      par3: '',
+      activeFileId: null,
       titleClass: 'title',
-      activeFile: null,
       button: false,
       show: true,
-      values: {},
+      title: '',
     };
+    this.onSave = this.onSave.bind(this);
+    this.newFile = this.newFile.bind(this);
+    this.fillDumbyData = this.fillDumbyData.bind(this);
+    this.keyUpUpdate = this.keyUpUpdate.bind(this);
+    this.keyDownUpdate = this.keyDownUpdate.bind(this);
+    this.handleClick = this.handleClick.bind(this);
+    this.updateTitle = this.updateTitle.bind(this);
+    this.select = this.select.bind(this);
+    this.deselect = this.deselect.bind(this);
+    this.twoFuncs = this.twoFuncs.bind(this);
+    this.onFileClick = this.onFileClick.bind(this);
+    this.deleteFile = this.deleteFile.bind(this);
   }
 
   // TODO: Add functions for:
@@ -49,50 +57,29 @@ class App extends Component {
     // Listeners are set here because if they are set inside of functions
     // they will exceed max listeners count and slow down the app
 
-    ipcRenderer.on('filesSent', (evt, files, tf) => {
+    ipcRenderer.on('filesSent', (evt, savedFiles, tf) => {
       console.log('tf in listener', tf);
       if (tf) {
-        this.setState({ files }, () => {
-          console.log('3.B set file to [0]');
-          this.setActiveFile(this.state.files[0]);
+        this.setState({ files: savedFiles }, () => {
+          const {
+            files: stateFiles,
+          } = this.state;
+          this.setActiveFile(stateFiles[0]); // eslint-disable-line react/destructuring-assignment
         });
       } else {
         console.log('3.A');
-        this.setState({ files });
+        this.setState({ files: savedFiles });
       }
     });
 
 
     ipcRenderer.on('fileDeleted', (evt, id) => {
+      const { activeFileId } = this.state;
       this.getFiles();
-      if (id === this.state.id) {
+      if (id === activeFileId) {
         this.newFile();
       }
     });
-  }
-
-  //------------------------------------
-  fillDumbyData() {
-    for (let i = 0; i < 10; i++) {
-      this.save(`Test ${i + 1}`, '', '', '');
-    }
-    this.getFiles();
-  }
-
-  //------------------------------------
-  testMain() {
-    main.testMain();
-  }
-
-  //------------------------------------
-  newFile() {
-    // make sure you're not editing another existing file
-    this.setState({ id: '' });
-    // clear all textfields
-    document.getElementById('title').value = '';
-    document.getElementById('par1').innerHTML = '';
-    document.getElementById('par2').innerHTML = '';
-    document.getElementById('par3').innerHTML = '';
   }
 
   //------------------------------------
@@ -113,7 +100,7 @@ class App extends Component {
 
   //------------------------------------
   onSave(param) {
-    const id = this.state.id;
+    const { activeFileId } = this.state;
     const title = document.getElementById('title').value;
     const par1 = document.getElementById('par1').innerHTML;
     const par2 = document.getElementById('par2').innerHTML;
@@ -129,9 +116,9 @@ class App extends Component {
     }
 
     // update file if exists
-    if (this.state.id) {
+    if (activeFileId) {
       console.log('2.Update');
-      main.update(id, title, par1, par2, par3);
+      main.update(activeFileId, title, par1, par2, par3);
       this.getFiles();
     } else if (param === 'autosave') {
       this.save(title, par1, par2, par3);
@@ -165,12 +152,31 @@ class App extends Component {
     // make sure all changes are updated to active file
     console.log('file', file);
     console.log('4.setActiveFile');
-    this.setState({ id: file.id });
+    this.setState({ activeFileId: file.id });
     // set all textfield values
     document.getElementById('title').value = file.title;
     document.getElementById('par1').innerHTML = file.par1;
     document.getElementById('par2').innerHTML = file.par2;
     document.getElementById('par3').innerHTML = file.par3;
+  }
+
+  //------------------------------------
+  newFile() {
+    // make sure you're not editing another existing file
+    this.setState({ activeFileId: '' });
+    // clear all textfields
+    document.getElementById('title').value = '';
+    document.getElementById('par1').innerHTML = '';
+    document.getElementById('par2').innerHTML = '';
+    document.getElementById('par3').innerHTML = '';
+  }
+
+  //------------------------------------
+  fillDumbyData() {
+    for (let i = 0; i < 10; i += 1) {
+      this.save(`Test ${i + 1}`, '', '', '');
+    }
+    this.getFiles();
   }
 
   //------------------------------------
@@ -204,7 +210,7 @@ class App extends Component {
 
   //------------------------------------
   updateTitle(e) {
-    const value = e.target.value;
+    const { value } = e.target;
     this.setState({ title: value });
   }
 
@@ -214,7 +220,6 @@ class App extends Component {
     const key = e.keyCode;
     // var text = e.target.innerHTML.replace(/&nbsp;/g,'')
     const text = e.target.innerHTML;
-    console.log('innerHTML', text);
     const ref = {
       9: 9, 13: 13, 16: 16, 17: 17, 18: 18, 27: 27, 37: 37, 38: 38, 39: 39, 40: 40, 93: 93,
     };
@@ -229,7 +234,7 @@ class App extends Component {
   // Doesn't work because once the value is changed the first time it no
   // no longer has brackets around it
   replace(e) {
-    const value = e.target.value;
+    const { value } = e.target;
     const parSelectors = ['par1', 'par2', 'par3'];
     document.getElementById('title').value = document.getElementById('title').value.replace(/{.*?}/g, `{${value}}`);
     parSelectors.forEach((selector) => {
@@ -238,11 +243,10 @@ class App extends Component {
   }
 
   //------------------------------------
-  select(e) {
-    const value = document.getElementById('selectBar').value;
+  select() {
+    const { value } = document.getElementById('selectBar');
     const re = new RegExp(value, 'g');
     const parSelectors = ['par1', 'par2', 'par3'];
-    console.log('value', value);
     if (value !== '') {
       document.getElementById('title').value = document.getElementById('title').value.replace(re, `{${value}}`);
       parSelectors.forEach((selector) => {
@@ -253,7 +257,7 @@ class App extends Component {
   }
 
   //------------------------------------
-  deselect(e) {
+  deselect() {
     // let re = new RegExp(value, "g")
     const parSelectors = ['par1', 'par2', 'par3'];
     document.getElementById('title').value = document.getElementById('title').value.replace(/\{|\}/g, '');
@@ -271,43 +275,51 @@ class App extends Component {
 
   //------------------------------------
   testButton() {
-    this.setState({ show: !this.state.show });
+    const { show } = this.state;
+    this.setState({ show: !show });
   }
 
   //------------------------------------
   buttonSwitch() {
-    this.setState({ button: !this.state.button });
+    const { button } = this.state;
+    this.setState({ button: !button });
   }
 
   //------------------------------------
   twoFuncs() {
     this.testButton();
     this.buttonSwitch();
-    console.log(this.state.button);
   }
   //------------------------------------
   render() {
+    const {
+      titleClass,
+      button,
+      show,
+      files,
+      activeFileId,
+    } = this.state;
     return (
       <div className="app">
         <div className="sidebar">
           {/* <FontAwesomeIcon icon={faHome} className="home-icon" onClick={this.handleClick.bind(this)} /> */}
-          <FontAwesomeIcon icon={faSave} className="home-icon" onClick={this.onSave.bind(this)} />
-          <FontAwesomeIcon icon={faPlusSquare} className="home-icon" onClick={this.newFile.bind(this)} />
-          <FontAwesomeIcon icon={faFill} className="home-icon" onClick={this.fillDumbyData.bind(this)} />
+          <FontAwesomeIcon icon={faSave} className="home-icon" onClick={this.onSave} />
+          <FontAwesomeIcon icon={faPlusSquare} className="home-icon" onClick={this.newFile} />
+          <FontAwesomeIcon icon={faFill} className="home-icon" onClick={this.fillDumbyData} />
         </div>
         <div className="writingCom">
           <div className="whole">
             <Writing
-              state={this.state}
-              keyUpUpdate={this.keyUpUpdate.bind(this)}
-              keyDownUpdate={this.keyDownUpdate.bind(this)}
-              handleClick={this.handleClick.bind(this)}
-              updateTitle={this.updateTitle.bind(this)}
+              titleClass={titleClass}
+              keyUpUpdate={this.keyUpUpdate}
+              keyDownUpdate={this.keyDownUpdate}
+              handleClick={this.handleClick}
+              updateTitle={this.updateTitle}
             />
             <div className="editBar">
               <input id="selectBar" className="variableInput" placeholder="Choose a variable" />
-              <button className="select-button" onClick={this.select.bind(this)}>Select</button>
-              <button className="select-button" onClick={this.deselect.bind(this)}>Deselect</button>
+              <button type="submit" className="select-button" onClick={this.select}>Select</button>
+              <button type="submit" className="select-button" onClick={this.deselect}>Deselect</button>
               <input
                 className="variableInput"
                 placeholder="Company Variable"
@@ -319,18 +331,18 @@ class App extends Component {
             </div>
           </div>
           <div className="button-div">
-            <button className="prev-button" onClick={this.twoFuncs.bind(this)}>
-              {this.state.button ? <FontAwesomeIcon icon={faAngleDoubleUp} className="up-icon" /> : <FontAwesomeIcon icon={faAngleDoubleDown} className="up-icon" /> }
+            <button type="submit" className="prev-button" onClick={this.twoFuncs}>
+              {button ? <FontAwesomeIcon icon={faAngleDoubleUp} className="up-icon" /> : <FontAwesomeIcon icon={faAngleDoubleDown} className="up-icon" /> }
             </button>
           </div>
-          { this.state.show ? (
+          { show ? (
             <div className="prevContainer">
-              {this.state.files ? (
+              {files ? (
                 <Files
-                  onFileClick={this.onFileClick.bind(this)}
-                  files={this.state.files}
-                  deleteFile={this.deleteFile.bind(this)}
-                  state={this.state}
+                  onFileClick={this.onFileClick}
+                  files={files}
+                  deleteFile={this.deleteFile}
+                  activeFileId={activeFileId}
                 />
               ) : null}
             </div>
