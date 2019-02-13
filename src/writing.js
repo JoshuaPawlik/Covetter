@@ -10,7 +10,7 @@ class Writing extends React.Component {
 
 
   render() {
-    const pars = this.props.pars || [1, 2, 3, 4, 5]; // eslint-disable-line react/destructuring-assignment
+    const pars = this.props.pars || [1, 2, 3]; // eslint-disable-line react/destructuring-assignment
     const {
       updateTitle,
       handleClick,

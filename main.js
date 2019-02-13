@@ -47,7 +47,7 @@ const testPdf = exports.testPdf = () => {
     pageSize: 'Letter'
   }, (error, data) => {
     if (error) throw error
-    fs.writeFile('/Users/Joshawesome12/Desktop/Holder/Covetter/print.pdf', data, (error) => {
+    fs.writeFile(path.join(app.getAppPath(), '/test.pdf'), data, (error) => {
       if (error) throw error
       console.log('Write PDF successfully.')
     });
