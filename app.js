@@ -26,6 +26,18 @@ class App extends Component {
       show: true,
       title: '',
     };
+    this.onSave = this.onSave.bind(this);
+    this.newFile = this.newFile.bind(this);
+    this.fillDumbyData = this.fillDumbyData.bind(this);
+    this.keyUpUpdate = this.keyUpUpdate.bind(this);
+    this.keyDownUpdate = this.keyDownUpdate.bind(this);
+    this.handleClick = this.handleClick.bind(this);
+    this.updateTitle = this.updateTitle.bind(this);
+    this.select = this.select.bind(this);
+    this.deselect = this.deselect.bind(this);
+    this.twoFuncs = this.twoFuncs.bind(this);
+    this.onFileClick = this.onFileClick.bind(this);
+    this.deleteFile = this.deleteFile.bind(this);
   }
 
   // TODO: Add functions for:
@@ -231,7 +243,7 @@ class App extends Component {
   }
 
   //------------------------------------
-  select(e) {
+  select() {
     const { value } = document.getElementById('selectBar');
     const re = new RegExp(value, 'g');
     const parSelectors = ['par1', 'par2', 'par3'];
@@ -245,7 +257,7 @@ class App extends Component {
   }
 
   //------------------------------------
-  deselect(e) {
+  deselect() {
     // let re = new RegExp(value, "g")
     const parSelectors = ['par1', 'par2', 'par3'];
     document.getElementById('title').value = document.getElementById('title').value.replace(/\{|\}/g, '');
@@ -280,27 +292,34 @@ class App extends Component {
   }
   //------------------------------------
   render() {
+    const {
+      titleClass,
+      button,
+      show,
+      files,
+      activeFileId,
+    } = this.state;
     return (
       <div className="app">
         <div className="sidebar">
           {/* <FontAwesomeIcon icon={faHome} className="home-icon" onClick={this.handleClick.bind(this)} /> */}
-          <FontAwesomeIcon icon={faSave} className="home-icon" onClick={this.onSave.bind(this)} />
-          <FontAwesomeIcon icon={faPlusSquare} className="home-icon" onClick={this.newFile.bind(this)} />
-          <FontAwesomeIcon icon={faFill} className="home-icon" onClick={this.fillDumbyData.bind(this)} />
+          <FontAwesomeIcon icon={faSave} className="home-icon" onClick={this.onSave} />
+          <FontAwesomeIcon icon={faPlusSquare} className="home-icon" onClick={this.newFile} />
+          <FontAwesomeIcon icon={faFill} className="home-icon" onClick={this.fillDumbyData} />
         </div>
         <div className="writingCom">
           <div className="whole">
             <Writing
-              titleClass={this.state.titleClass}
-              keyUpUpdate={this.keyUpUpdate.bind(this)}
-              keyDownUpdate={this.keyDownUpdate.bind(this)}
-              handleClick={this.handleClick.bind(this)}
-              updateTitle={this.updateTitle.bind(this)}
+              titleClass={titleClass}
+              keyUpUpdate={this.keyUpUpdate}
+              keyDownUpdate={this.keyDownUpdate}
+              handleClick={this.handleClick}
+              updateTitle={this.updateTitle}
             />
             <div className="editBar">
               <input id="selectBar" className="variableInput" placeholder="Choose a variable" />
-              <button className="select-button" onClick={this.select.bind(this)}>Select</button>
-              <button className="select-button" onClick={this.deselect.bind(this)}>Deselect</button>
+              <button type="submit" className="select-button" onClick={this.select}>Select</button>
+              <button type="submit" className="select-button" onClick={this.deselect}>Deselect</button>
               <input
                 className="variableInput"
                 placeholder="Company Variable"
@@ -312,18 +331,18 @@ class App extends Component {
             </div>
           </div>
           <div className="button-div">
-            <button className="prev-button" onClick={this.twoFuncs.bind(this)}>
-              {this.state.button ? <FontAwesomeIcon icon={faAngleDoubleUp} className="up-icon" /> : <FontAwesomeIcon icon={faAngleDoubleDown} className="up-icon" /> }
+            <button type="submit" className="prev-button" onClick={this.twoFuncs}>
+              {button ? <FontAwesomeIcon icon={faAngleDoubleUp} className="up-icon" /> : <FontAwesomeIcon icon={faAngleDoubleDown} className="up-icon" /> }
             </button>
           </div>
-          { this.state.show ? (
+          { show ? (
             <div className="prevContainer">
-              {this.state.files ? (
+              {files ? (
                 <Files
-                  onFileClick={this.onFileClick.bind(this)}
-                  files={this.state.files}
-                  deleteFile={this.deleteFile.bind(this)}
-                  activeFileId={this.state.activeFileId}
+                  onFileClick={this.onFileClick}
+                  files={files}
+                  deleteFile={this.deleteFile}
+                  activeFileId={activeFileId}
                 />
               ) : null}
             </div>
