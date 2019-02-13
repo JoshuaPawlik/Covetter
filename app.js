@@ -1,3 +1,4 @@
+
 import React, { Component } from 'react';
 import './styles.sass';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -40,10 +41,6 @@ class App extends Component {
   componentDidMount() {
     // console.log('main',main)
     this.getFiles();
-    const {
-      files: stateFiles,
-      activeFileId,
-    } = this.state;
 
     // Listeners are set here because if they are set inside of functions
     // they will exceed max listeners count and slow down the app
@@ -52,8 +49,10 @@ class App extends Component {
       console.log('tf in listener', tf);
       if (tf) {
         this.setState({ files: savedFiles }, () => {
-          console.log('3.B set file to [0]');
-          this.setActiveFile(stateFiles[0]);
+          const {
+            files: stateFiles,
+          } = this.state;
+          this.setActiveFile(stateFiles[0]); // eslint-disable-line react/destructuring-assignment
         });
       } else {
         console.log('3.A');
@@ -63,27 +62,12 @@ class App extends Component {
 
 
     ipcRenderer.on('fileDeleted', (evt, id) => {
+      const { activeFileId } = this.state;
       this.getFiles();
       if (id === activeFileId) {
         this.newFile();
       }
     });
-  }
-
-  //------------------------------------
-  testMain() {
-    main.testMain();
-  }
-
-  //------------------------------------
-  newFile() {
-    // make sure you're not editing another existing file
-    this.setState({ activeFileId: '' });
-    // clear all textfields
-    document.getElementById('title').value = '';
-    document.getElementById('par1').innerHTML = '';
-    document.getElementById('par2').innerHTML = '';
-    document.getElementById('par3').innerHTML = '';
   }
 
   //------------------------------------
@@ -162,6 +146,17 @@ class App extends Component {
     document.getElementById('par1').innerHTML = file.par1;
     document.getElementById('par2').innerHTML = file.par2;
     document.getElementById('par3').innerHTML = file.par3;
+  }
+
+  //------------------------------------
+  newFile() {
+    // make sure you're not editing another existing file
+    this.setState({ activeFileId: '' });
+    // clear all textfields
+    document.getElementById('title').value = '';
+    document.getElementById('par1').innerHTML = '';
+    document.getElementById('par2').innerHTML = '';
+    document.getElementById('par3').innerHTML = '';
   }
 
   //------------------------------------
