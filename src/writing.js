@@ -17,9 +17,8 @@ class Writing extends React.Component {
       keyDownUpdate,
       keyUpUpdate,
       state,
+      titleClass
     } = this.props;
-
-    const { titleClass } = state;
 
     return (
       <div className="writing">
