@@ -23,6 +23,7 @@ class App extends Component {
       titleClass: 'title',
       button: false,
       show: true,
+      title: '',
     };
   }
 
@@ -39,38 +40,34 @@ class App extends Component {
   componentDidMount() {
     // console.log('main',main)
     this.getFiles();
+    const {
+      files: stateFiles,
+      activeFileId,
+    } = this.state;
 
     // Listeners are set here because if they are set inside of functions
     // they will exceed max listeners count and slow down the app
 
-    ipcRenderer.on('filesSent', (evt, files, tf) => {
+    ipcRenderer.on('filesSent', (evt, savedFiles, tf) => {
       console.log('tf in listener', tf);
       if (tf) {
-        this.setState({ files }, () => {
+        this.setState({ files: savedFiles }, () => {
           console.log('3.B set file to [0]');
-          this.setActiveFile(this.state.files[0]);
+          this.setActiveFile(stateFiles[0]);
         });
       } else {
         console.log('3.A');
-        this.setState({ files });
+        this.setState({ files: savedFiles });
       }
     });
 
 
     ipcRenderer.on('fileDeleted', (evt, id) => {
       this.getFiles();
-      if (id === this.state.activeFileId) {
+      if (id === activeFileId) {
         this.newFile();
       }
     });
-  }
-
-  //------------------------------------
-  fillDumbyData() {
-    for (let i = 0; i < 10; i++) {
-      this.save(`Test ${i + 1}`, '', '', '');
-    }
-    this.getFiles();
   }
 
   //------------------------------------
@@ -168,6 +165,14 @@ class App extends Component {
   }
 
   //------------------------------------
+  fillDumbyData() {
+    for (let i = 0; i < 10; i += 1) {
+      this.save(`Test ${i + 1}`, '', '', '');
+    }
+    this.getFiles();
+  }
+
+  //------------------------------------
   save(title, par1, par2, par3) {
     main.save(title, par1, par2, par3);
     // retrieve files
@@ -198,7 +203,7 @@ class App extends Component {
 
   //------------------------------------
   updateTitle(e) {
-    const value = e.target.value;
+    const { value } = e.target;
     this.setState({ title: value });
   }
 
@@ -208,7 +213,6 @@ class App extends Component {
     const key = e.keyCode;
     // var text = e.target.innerHTML.replace(/&nbsp;/g,'')
     const text = e.target.innerHTML;
-    console.log('innerHTML', text);
     const ref = {
       9: 9, 13: 13, 16: 16, 17: 17, 18: 18, 27: 27, 37: 37, 38: 38, 39: 39, 40: 40, 93: 93,
     };
@@ -223,7 +227,7 @@ class App extends Component {
   // Doesn't work because once the value is changed the first time it no
   // no longer has brackets around it
   replace(e) {
-    const value = e.target.value;
+    const { value } = e.target;
     const parSelectors = ['par1', 'par2', 'par3'];
     document.getElementById('title').value = document.getElementById('title').value.replace(/{.*?}/g, `{${value}}`);
     parSelectors.forEach((selector) => {
@@ -233,10 +237,9 @@ class App extends Component {
 
   //------------------------------------
   select(e) {
-    const value = document.getElementById('selectBar').value;
+    const { value } = document.getElementById('selectBar');
     const re = new RegExp(value, 'g');
     const parSelectors = ['par1', 'par2', 'par3'];
-    console.log('value', value);
     if (value !== '') {
       document.getElementById('title').value = document.getElementById('title').value.replace(re, `{${value}}`);
       parSelectors.forEach((selector) => {
@@ -265,19 +268,20 @@ class App extends Component {
 
   //------------------------------------
   testButton() {
-    this.setState({ show: !this.state.show });
+    const { show } = this.state;
+    this.setState({ show: !show });
   }
 
   //------------------------------------
   buttonSwitch() {
-    this.setState({ button: !this.state.button });
+    const { button } = this.state;
+    this.setState({ button: !button });
   }
 
   //------------------------------------
   twoFuncs() {
     this.testButton();
     this.buttonSwitch();
-    console.log(this.state.button);
   }
   //------------------------------------
   render() {

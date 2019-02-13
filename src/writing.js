@@ -16,8 +16,7 @@ class Writing extends React.Component {
       handleClick,
       keyDownUpdate,
       keyUpUpdate,
-      state,
-      titleClass
+      titleClass,
     } = this.props;
 
     return (
