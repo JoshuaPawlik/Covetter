@@ -5,13 +5,12 @@ import Paragraphs from './paragraphs';
 class Writing extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {
-      pars: [1, 2, 3],
-    };
+    this.state = {};
   }
 
 
   render() {
+    const pars = this.props.pars || [1, 2, 3, 4, 5]; // eslint-disable-line react/destructuring-assignment
     const {
       updateTitle,
       handleClick,
@@ -30,7 +29,7 @@ class Writing extends React.Component {
           </div>
           <div className="paragraphs">
             <Paragraphs
-              pars={this.state.pars}
+              pars={pars}
               handleClick={handleClick.bind(this)}
               keyUpUpdate={keyUpUpdate.bind(this)}
               keyDownUpdate={keyDownUpdate.bind(this)}
