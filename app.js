@@ -85,6 +85,9 @@ class App extends Component {
   //------------------------------------
   onFileClick(file) {
     console.log('onFileClick ran');
+    if (file.id === this.state.activeFileId) {
+      return;
+    }
     if (document.getElementById('title').value !== '') {
       // this invoke is causing setActiveFile to run twice
       console.log('1.A');
