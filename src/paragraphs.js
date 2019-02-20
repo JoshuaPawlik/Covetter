@@ -3,7 +3,7 @@ import Paragraph from './paragraph';
 import '../styles.sass';
 
 const Paragraphs = props => (
-  <div className="files">
+  <div className="paragraphs">
     {props.pars.map((par, index) => (
       <Paragraph
         par={par}
