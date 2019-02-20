@@ -97,6 +97,8 @@ class App extends Component {
       console.log('1.B');
       this.setActiveFile(file);
     }
+
+    document.getElementById('variableInput').value = '';
     // console.log(title,'title')
     // console.log('file in onFileClick',file)
   }
@@ -200,7 +202,7 @@ class App extends Component {
   //------------------------------------
   // This function is mostly to prevent
   // unwanted actions
-  keyDownUpdate(e, num) {
+  keyDownUpdate(e) {
     const key = e.keyCode;
     if (key === 13) {
       e.preventDefault();
@@ -293,6 +295,11 @@ class App extends Component {
     this.testButton();
     this.buttonSwitch();
   }
+
+  logHTML() {
+    console.log(document.getElementById('title').innerHTML, document.getElementById('par1'));
+  }
+
   //------------------------------------
   render() {
     const {
@@ -322,15 +329,15 @@ class App extends Component {
             <div className="editBar">
               <input id="selectBar" className="variableInput" placeholder="Choose a variable" />
               <button type="submit" className="select-button" onClick={this.select}>Select</button>
-              <button type="submit" className="select-button" onClick={this.deselect}>Deselect</button>
               <input
+                id="variableInput"
                 className="variableInput"
                 placeholder="Company Variable"
-                onChange={(e) => {
-                  this.replace(e);
-                }}
+                onChange={(e) => { this.replace(e); }}
               />
-              <button className="select-button" onClick={() => main.exportPDF()}>Export PDF</button>
+              {/* <button type="submit" className="select-button" onClick={this.logHTML}>logHTML</button> */}
+              <button type="submit" className="select-button" onClick={this.deselect}>Deselect</button>
+              <button type="submit" className="select-button" onClick={() => main.exportPDF(document.getElementById('title').value)}>Export PDF</button>
             </div>
           </div>
           <div className="button-div">

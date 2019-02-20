@@ -42,12 +42,15 @@ function createWindow() {
   });
 }
 
-const exportPDF = exports.exportPDF = () => {
+const exportPDF = exports.exportPDF = (title) => {
   console.log('running testPDF');
+
+
+  console.log('title ---->', title)
 
   const filePath = dialog.showSaveDialog(mainWindow, {
     title: 'Save PDF',
-    defaultPath: app.getPath('desktop'),
+    defaultPath: path.join(app.getPath('desktop'), `${title}`),
     filters: [
       { name: 'PDF Files', extensions: ['pdf'] },
     ],
