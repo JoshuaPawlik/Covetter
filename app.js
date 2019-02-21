@@ -164,22 +164,23 @@ class App extends Component {
     console.log('file', file);
     console.log('4.setActiveFile');
     this.setState({ activeFileId: file.id, activeFile: file });
-    // set all textfield values
+    // set all titlefield value
     document.getElementById('title').value = file.title;
-    document.getElementById('par1').innerHTML = file.par1;
-    document.getElementById('par2').innerHTML = file.par2;
-    document.getElementById('par3').innerHTML = file.par3;
   }
 
   //------------------------------------
   newFile() {
-    // make sure you're not editing another existing file
-    this.setState({ activeFileId: '' });
-    // clear all textfields
+    this.setState({ activeFileId: '', activeFile: {
+      id: '',
+      pars: [],
+      title: '',
+    } });
+    const pars = this.state.activeFile.pars;
+
     document.getElementById('title').value = '';
-    document.getElementById('par1').innerHTML = '';
-    document.getElementById('par2').innerHTML = '';
-    document.getElementById('par3').innerHTML = '';
+    pars.forEach((par) => {
+      document.getElementById(`par${par.par_num}`).innerHTML = '';
+    });
   }
 
   //------------------------------------

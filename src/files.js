@@ -16,7 +16,7 @@ const Files = (props) => {
         <File
           file={file}
           title={file.title}
-          pars = {file.pars}
+          pars={file.pars}
           key={index}
           onFileClick={onFileClick}
           deleteFile={deleteFile}
