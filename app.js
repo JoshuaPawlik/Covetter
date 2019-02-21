@@ -56,20 +56,20 @@ class App extends Component {
 
   componentDidMount() {
     // console.log('main',main)
-    this.getFiles(true);
+    this.getFiles();
 
     // Listeners are set here because if they are set inside of functions
     // they will exceed max listeners count and slow down the app
 
     ipcRenderer.on('filesSent', (evt, savedFiles, tf) => {
       // console.log('tf in listener', tf);
-      console.log('received files', savedFiles)
+      console.log('received files', savedFiles);
       if (tf) {
         this.setState({ files: savedFiles }, () => {
           const {
             files: stateFiles,
           } = this.state;
-          this.setActiveFile(stateFiles[2]); // eslint-disable-line react/destructuring-assignment
+          this.setActiveFile(stateFiles[0]); // eslint-disable-line react/destructuring-assignment
         });
       } else {
         console.log('3.A');
@@ -93,7 +93,8 @@ class App extends Component {
     if (file.id === this.state.activeFileId) {
       return;
     }
-    if (document.getElementById('title').value !== '') {
+    const titleEl = document.getElementById('title');
+    if (titleEl && titleEl.value !== '') {
       // this invoke is causing setActiveFile to run twice
       console.log('1.A');
       this.onSave('autosave');
@@ -162,7 +163,7 @@ class App extends Component {
     // make sure all changes are updated to active file
     console.log('file', file);
     console.log('4.setActiveFile');
-    this.setState({ activeFileId: file.id });
+    this.setState({ activeFileId: file.id, activeFile: file });
     // set all textfield values
     document.getElementById('title').value = file.title;
     document.getElementById('par1').innerHTML = file.par1;
@@ -324,13 +325,14 @@ class App extends Component {
         </div>
         <div className="writingCom">
           <div className="whole">
-            <Writing
-              titleClass={titleClass}
-              keyUpUpdate={this.keyUpUpdate}
-              keyDownUpdate={this.keyDownUpdate}
-              handleClick={this.handleClick}
-              updateTitle={this.updateTitle}
-            />
+              <Writing
+                activeFile={this.state.activeFile}
+                titleClass={titleClass}
+                keyUpUpdate={this.keyUpUpdate}
+                keyDownUpdate={this.keyDownUpdate}
+                handleClick={this.handleClick}
+                updateTitle={this.updateTitle}
+              />
             <div className="editBar">
               <input id="selectBar" className="variableInput" onKeyDown={(e) => { if (e.keyCode === 13) this.select(); }} placeholder="Choose a variable" />
               <button type="submit" className="select-button" onClick={this.select}>Select</button>

@@ -11,13 +11,20 @@ class Writing extends React.Component {
 
   render() {
     const pars = this.props.pars || [1, 2, 3]; // eslint-disable-line react/destructuring-assignment
+
+
+    console.log('---->', pars)
+
     const {
+      activeFile,
       updateTitle,
       handleClick,
       keyDownUpdate,
       keyUpUpdate,
       titleClass,
     } = this.props;
+
+    console.log('activeFile', activeFile)
 
     return (
       <div className="writing">
@@ -27,7 +34,7 @@ class Writing extends React.Component {
           </div>
           <div className="paragraphs">
             <Paragraphs
-              pars={pars}
+              pars={activeFile ? activeFile.pars : []}
               handleClick={handleClick.bind(this)}
               keyUpUpdate={keyUpUpdate.bind(this)}
               keyDownUpdate={keyDownUpdate.bind(this)}

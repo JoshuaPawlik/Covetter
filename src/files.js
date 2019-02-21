@@ -9,13 +9,14 @@ const Files = (props) => {
     deleteFile,
     activeFileId,
   } = props;
+
   return (
     <div className="files">
       {files.map((file, index) => (
         <File
           file={file}
           title={file.title}
-          par1={file.par1}
+          pars = {file.pars}
           key={index}
           onFileClick={onFileClick}
           deleteFile={deleteFile}
