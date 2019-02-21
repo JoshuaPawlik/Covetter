@@ -40,6 +40,10 @@ class App extends Component {
     this.deleteFile = this.deleteFile.bind(this);
   }
 
+
+  // WHAT IF: We stored there was only one content editable div and instead of a set number of paragraphs we array.split() them at newline breaks and stored according to their index
+  // But how would we switch out paragraph presets without them being broken up until after theyre stored.
+
   // TODO: Add functions for:
   // Add Paragraph by making it it's own react component
   // Add alternate paragraph
@@ -52,19 +56,20 @@ class App extends Component {
 
   componentDidMount() {
     // console.log('main',main)
-    this.getFiles();
+    this.getFiles(true);
 
     // Listeners are set here because if they are set inside of functions
     // they will exceed max listeners count and slow down the app
 
     ipcRenderer.on('filesSent', (evt, savedFiles, tf) => {
-      console.log('tf in listener', tf);
+      // console.log('tf in listener', tf);
+      console.log('received files', savedFiles)
       if (tf) {
         this.setState({ files: savedFiles }, () => {
           const {
             files: stateFiles,
           } = this.state;
-          this.setActiveFile(stateFiles[0]); // eslint-disable-line react/destructuring-assignment
+          this.setActiveFile(stateFiles[2]); // eslint-disable-line react/destructuring-assignment
         });
       } else {
         console.log('3.A');
@@ -243,7 +248,7 @@ class App extends Component {
     const parSelectors = ['par1', 'par2', 'par3'];
     document.getElementById('title').value = document.getElementById('title').value.replace(/{.*?}/g, `{${value}}`);
     parSelectors.forEach((selector) => {
-      document.getElementById(selector).innerHTML = document.getElementById(selector).innerHTML.replace(/{.*?}/g, `{${value}}`);
+      document.getElementById(selector).innerHTML = document.getElementById(selector).innerHTML.replace(/<span style="color:red">.*?<\/span>/g, `<span style="color:red">${value}</span>`);
     });
   }
 
@@ -253,9 +258,9 @@ class App extends Component {
     const re = new RegExp(value, 'g');
     const parSelectors = ['par1', 'par2', 'par3'];
     if (value !== '') {
-      document.getElementById('title').value = document.getElementById('title').value.replace(re, `{${value}}`);
+      document.getElementById('title').innerHTML = document.getElementById('title').innerHTML.replace(re, '<span style="color:red">' + `{${value}}` + '</span>');
       parSelectors.forEach((selector) => {
-        document.getElementById(selector).innerHTML = document.getElementById(selector).innerHTML.replace(re, `{${value}}`);
+        document.getElementById(selector).innerHTML = document.getElementById(selector).innerHTML.replace(re, '<span style="color:red">' + `${value}` + '</span>');
       });
     }
     document.getElementById('selectBar').value = '';
@@ -267,9 +272,9 @@ class App extends Component {
     const parSelectors = ['par1', 'par2', 'par3'];
     document.getElementById('title').value = document.getElementById('title').value.replace(/\{|\}/g, '');
     parSelectors.forEach((selector) => {
-      document.getElementById(selector).innerHTML = document.getElementById(selector).innerHTML.replace(/\{|\}/g, '');
+      document.getElementById(selector).innerHTML = document.getElementById(selector).innerHTML.replace(/<span style="color:red">|<\/span>/g, '');
     });
-    document.getElementById('selectBar').value = '';
+    document.getElementById('variableInput').value = '';
   }
 
   //------------------------------------
@@ -327,13 +332,14 @@ class App extends Component {
               updateTitle={this.updateTitle}
             />
             <div className="editBar">
-              <input id="selectBar" className="variableInput" placeholder="Choose a variable" />
+              <input id="selectBar" className="variableInput" onKeyDown={(e) => { if (e.keyCode === 13) this.select(); }} placeholder="Choose a variable" />
               <button type="submit" className="select-button" onClick={this.select}>Select</button>
               <input
                 id="variableInput"
                 className="variableInput"
                 placeholder="Company Variable"
                 onChange={(e) => { this.replace(e); }}
+                onKeyDown={(e) => { if (e.keyCode === 13) this.deselect(); }}
               />
               {/* <button type="submit" className="select-button" onClick={this.logHTML}>logHTML</button> */}
               <button type="submit" className="select-button" onClick={this.deselect}>Deselect</button>

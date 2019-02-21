@@ -89,6 +89,7 @@ body
 				border-right: none
 				border-left: none
       	border-bottom: 2px solid grey
+				outline: none
 			.select-button
 				border: none
 				outline: none
@@ -166,7 +167,7 @@ body
 		align-content: center
 		justify-content: center
 		height: 80vh
-		width: 100%
+		width: 95%
 		overflow: auto
 		margin: 0
 		padding: 0
@@ -204,6 +205,7 @@ body
 					display: flex
 					flex-direction: row
 					align-items: flex-start
+					margin: 0px
 					width: 90%
 					padding: 20px
 					// justify-content: flex-start
@@ -212,6 +214,12 @@ body
 						margin: 0
 						padding-right: 10px
 						font-size: 20px
+						-webkit-touch-callout: none
+				    -webkit-user-select: none
+				    -khtml-user-select: none
+				    -moz-user-select: none
+				    -ms-user-select: none
+				    user-select: none
 						&:hover
 							color: #757575
 
@@ -266,18 +274,44 @@ $size: 30px
 				color: #00C99C
 
 @media print
+	span
+		// !important allows you to override inline styling
+		color: black !important
+	.paragraph
+		padding: 5px !important
+	.sidebar
+		display: none
 	.active
-		visibility: hidden
+		display: none !important
 	.tinyPrev
-		visibility: hidden
+		display: none !important
 	.variableInput
 		visibility: hidden
+		display: none
 	.select-button
 		visibility: hidden
-	.editBar *
+		display: none
+	.editBar
+		display: none !important
+	.prev-button
 		display: none
 	.prevContainer
+		display: none !important
+	.p-num
 		display: none
+	.files
+		display: none
+	.whole
+		width: 100%
+		height: 100%
+	.writing
+		width: 100vw !important
+		height: 100vh !important
+	.textarea
+		font-size: 22px !important
+		overflow: auto
+	.content .title
+		font-size: 26px !important
 
 @keyframes shake
   10%, 90%

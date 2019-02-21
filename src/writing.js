@@ -36,6 +36,7 @@ class Writing extends React.Component {
         </div>
         {' '}
         {/* Writing */}
+        { /* <input type="text" id="title" placeholder="Title" className={titleClass} onChange={e => updateTitle(e)} /> */ }
       </div>
     );
   }

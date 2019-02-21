@@ -93,12 +93,23 @@ const testMain = exports.testMain = () => {
   console.log('DOES IT WORK!!!!!');
 };
 
-const sendFiles = exports.sendFiles = (tf) => {
-  const files = knex.select('*').from('files').orderBy('id', 'desc');
-  files.then((files) => {
-    // console.log('files',files);
-    mainWindow.webContents.send('filesSent', files, tf);
+const sendFiles = exports.sendFiles = async (tf) => {
+  const files = await knex.select('*').from('files').orderBy('id', 'desc');
+  const pars = await knex.select('*').from('pars');
+
+  const filesWithPars = files.map((file) => {
+    const fileId = file.id;
+
+    const parsForFile = pars.filter((par) => par.file_id === fileId);
+    file.pars = parsForFile;
+    // console.log('parsForFile', parsForFile)
+    return file
   });
+
+  mainWindow.webContents.send('filesSent', filesWithPars, tf);
+  // files.then((files) => {
+  //   // console.log('files',files);
+  // });
 };
 
 const save = exports.save = ((title, par1, par2, par3) => {
