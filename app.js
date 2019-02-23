@@ -25,6 +25,7 @@ class App extends Component {
       button: false,
       show: true,
       title: '',
+      newFilePars: [],
     };
     this.onSave = this.onSave.bind(this);
     this.newFile = this.newFile.bind(this);
@@ -38,6 +39,7 @@ class App extends Component {
     this.twoFuncs = this.twoFuncs.bind(this);
     this.onFileClick = this.onFileClick.bind(this);
     this.deleteFile = this.deleteFile.bind(this);
+    this.addParagraph = this.addParagraph.bind(this);
   }
 
 
@@ -170,11 +172,14 @@ class App extends Component {
 
   //------------------------------------
   newFile() {
-    this.setState({ activeFileId: '', activeFile: {
-      id: '',
-      pars: [],
-      title: '',
-    } });
+    this.setState({
+      activeFileId: '',
+      activeFile: {
+        id: '',
+        pars: [],
+        title: '',
+      },
+    });
     const pars = this.state.activeFile.pars;
 
     document.getElementById('title').value = '';
@@ -302,9 +307,29 @@ class App extends Component {
     this.testButton();
     this.buttonSwitch();
   }
+  //------------------------------------
 
   logHTML() {
     console.log(document.getElementById('title').innerHTML, document.getElementById('par1'));
+  }
+  //------------------------------------
+
+  addParagraph(e) {
+    // if (e) e.stopPropagation();
+    console.log(this.state);
+    const temp = this.state.newFilePars.concat([{
+      file_id: 0,
+      par_num: this.state.newFilePars.length + 1,
+      text: '',
+    }]);
+
+    this.setState({ newFilePars: temp }, () => {
+      console.log(this.state.newFilePars);
+      const num = this.state.newFilePars.length;
+      document.getElementById(`par${num}`).focus();
+      // console.log('div that should focus', div)
+      // div.focus();
+    });
   }
 
   //------------------------------------
@@ -326,14 +351,16 @@ class App extends Component {
         </div>
         <div className="writingCom">
           <div className="whole">
-              <Writing
-                activeFile={this.state.activeFile}
-                titleClass={titleClass}
-                keyUpUpdate={this.keyUpUpdate}
-                keyDownUpdate={this.keyDownUpdate}
-                handleClick={this.handleClick}
-                updateTitle={this.updateTitle}
-              />
+            <Writing
+              newFilePars={this.state.newFilePars}
+              addParagraph={this.addParagraph}
+              activeFile={this.state.activeFile}
+              titleClass={titleClass}
+              keyUpUpdate={this.keyUpUpdate}
+              keyDownUpdate={this.keyDownUpdate}
+              handleClick={this.handleClick}
+              updateTitle={this.updateTitle}
+            />
             <div className="editBar">
               <input id="selectBar" className="variableInput" onKeyDown={(e) => { if (e.keyCode === 13) this.select(); }} placeholder="Choose a variable" />
               <button type="submit" className="select-button" onClick={this.select}>Select</button>

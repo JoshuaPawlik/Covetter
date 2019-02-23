@@ -16,6 +16,8 @@ class Writing extends React.Component {
     console.log('---->', pars)
 
     const {
+      newFilePars,
+      addParagraph,
       activeFile,
       updateTitle,
       handleClick,
@@ -25,16 +27,24 @@ class Writing extends React.Component {
     } = this.props;
 
     console.log('activeFile', activeFile)
+    console.log('newFilePars',newFilePars)
 
     return (
       <div className="writing">
         <div className="content">
           <div className="titleDiv">
-            <input type="text" id="title" placeholder="Title" className={titleClass} onChange={e => updateTitle(e)} />
+            <input
+              type="text"
+              id="title"
+              placeholder="Title"
+              className={titleClass}
+              onChange={e => updateTitle(e)}
+              onKeyDown={(e) => { if (e.keyCode === 13) e.preventDefault(); addParagraph(e); }}
+              />
           </div>
           <div className="paragraphs">
             <Paragraphs
-              pars={activeFile ? activeFile.pars : []}
+              pars={activeFile ? activeFile.pars : newFilePars}
               handleClick={handleClick.bind(this)}
               keyUpUpdate={keyUpUpdate.bind(this)}
               keyDownUpdate={keyDownUpdate.bind(this)}
