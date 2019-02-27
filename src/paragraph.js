@@ -19,7 +19,7 @@ const Paragraph = (props) => {
         type="text"
         id={`par${parNum}`}
         className="textarea"
-        onKeyUp={e => keyUpUpdate(e, 1)}
+        onKeyUp={e => keyUpUpdate(e, parNum)}
         onKeyDown={keyDownUpdate}
       >
         {text}

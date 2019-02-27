@@ -10,10 +10,10 @@ class Writing extends React.Component {
 
 
   render() {
-    const pars = this.props.pars || [1, 2, 3]; // eslint-disable-line react/destructuring-assignment
+    // const pars = this.props.pars || [1, 2, 3]; // eslint-disable-line react/destructuring-assignment
 
 
-    console.log('---->', pars)
+    // console.log('---->', pars)
 
     const {
       newFilePars,
@@ -26,8 +26,6 @@ class Writing extends React.Component {
       titleClass,
     } = this.props;
 
-    console.log('activeFile', activeFile)
-    console.log('newFilePars',newFilePars)
 
     return (
       <div className="writing">
@@ -39,8 +37,13 @@ class Writing extends React.Component {
               placeholder="Title"
               className={titleClass}
               onChange={e => updateTitle(e)}
-              onKeyDown={(e) => { if (e.keyCode === 13) e.preventDefault(); addParagraph(e); }}
-              />
+              onKeyDown={(e) => {
+                if (e.keyCode === 13) {
+                  e.preventDefault();
+                  addParagraph(e);
+                }
+              }}
+            />
           </div>
           <div className="paragraphs">
             <Paragraphs

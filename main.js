@@ -112,13 +112,23 @@ const sendFiles = exports.sendFiles = async (tf) => {
   // });
 };
 
-const save = exports.save = ((title, par1, par2, par3) => {
-  // console.log('stuff',title,par1,par2,par3);
-  knex('files').insert({
-    title, par1, par2, par3,
-  }).then(() => { console.log('inserted into database'); }).catch((e) => {
-    console.error(e);
-  });
+const save = exports.save = ((title, pars) => {
+  console.log('in main.save title ===', title, 'pars===', pars);
+
+  knex('files').insert({ title })
+    .then((result) => {
+      pars.forEach((par) => {
+        const { text, par_num } = par;
+        const file_id = result[0];
+        // const text = par.text;
+        // const par_num = par.par_num;
+
+        knex('pars').insert({ file_id, par_num, text })
+          .catch((err) => {
+            console.log('========>', err)
+          });
+      });
+    });
 });
 
 

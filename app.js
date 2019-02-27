@@ -91,8 +91,9 @@ class App extends Component {
 
   //------------------------------------
   onFileClick(file) {
+    const {activeFileId} = this.state;
     console.log('onFileClick ran');
-    if (file.id === this.state.activeFileId) {
+    if (file.id === activeFileId) {
       return;
     }
     const titleEl = document.getElementById('title');
@@ -113,42 +114,52 @@ class App extends Component {
 
   //------------------------------------
   onSave(param) {
-    const { activeFileId } = this.state;
-    const title = document.getElementById('title').value;
-    const par1 = document.getElementById('par1').innerHTML;
-    const par2 = document.getElementById('par2').innerHTML;
-    const par3 = document.getElementById('par3').innerHTML;
+    // const { activeFileId } = this.state;
+    console.log('this.state in Onsave', this.state)
+    const { title, newFilePars } = this.state;
+
+    console.log('passed in', title, newFilePars)
+    main.save(title, newFilePars);
+
+
+    // if (!activeFileId){
+    //   const title = document.getElementById('title').value;
+    //
+    // }
+    // const par1 = document.getElementById('par1').innerHTML;
+    // const par2 = document.getElementById('par2').innerHTML;
+    // const par3 = document.getElementById('par3').innerHTML;
 
     // Checks to make sure Title is not empty
-    if (title === '') {
-      this.setState({ titleClass: 'title red-shake' });
-      setTimeout(() => {
-        this.setState({ titleClass: 'title' });
-      }, 1000);
-      return;
-    }
+    // if (title === '') {
+    //   this.setState({ titleClass: 'title red-shake' });
+    //   setTimeout(() => {
+    //     this.setState({ titleClass: 'title' });
+    //   }, 1000);
+    //   return;
+    // }
 
-    // update file if exists
-    if (activeFileId) {
-      console.log('2.Update');
-      main.update(activeFileId, title, par1, par2, par3);
-      this.getFiles();
-    } else if (param === 'autosave') {
-      this.save(title, par1, par2, par3);
-      this.getFiles();
-    } else {
-      // auto saving the file onFileClick sets the new file to activeFile
-
-
-      // Clicking the save button sets the first file to active so it doesn't duplicate itself
-      // if you switch off
-
-
-      // save new file if it does not exists
-      console.log('2.New');
-      this.save(title, par1, par2, par3);
-      this.getFiles(true);
-    }
+    // // update file if exists
+    // if (activeFileId) {
+    //   console.log('2.Update');
+    //   main.update(activeFileId, title, par1, par2, par3);
+    //   this.getFiles();
+    // } else if (param === 'autosave') {
+    //   this.save(title, par1, par2, par3);
+    //   this.getFiles();
+    // } else {
+    //   // auto saving the file onFileClick sets the new file to activeFile
+    //
+    //
+    //   // Clicking the save button sets the first file to active so it doesn't duplicate itself
+    //   // if you switch off
+    //
+    //
+    //   // save new file if it does not exists
+    //   console.log('2.New');
+    //   this.save(title, par1, par2, par3);
+    //   this.getFiles(true);
+    // }
   }
 
   //------------------------------------
@@ -234,6 +245,9 @@ class App extends Component {
   //------------------------------------
   // Updates state as you type
   keyUpUpdate(e, num) {
+
+    // console.log('e', e);
+    // console.log('num', num);
     const key = e.keyCode;
     // var text = e.target.innerHTML.replace(/&nbsp;/g,'')
     const text = e.target.innerHTML;
@@ -243,7 +257,8 @@ class App extends Component {
     if (!ref[key]) {
       // Don't try to console.log state because it shows
       // the updated content in state late
-      this.setState({ [`par${num}`]: text });
+      this.state.newFilePars[num -1].text = e.target.innerHTML;
+      // this.setState({ newFilePars: this.state.newFilePars[0].text });
     }
   }
 
