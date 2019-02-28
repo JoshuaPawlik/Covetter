@@ -42,7 +42,6 @@ class App extends Component {
     this.addParagraph = this.addParagraph.bind(this);
   }
 
-
   // WHAT IF: We stored there was only one content editable div and instead of a set number of paragraphs we array.split() them at newline breaks and stored according to their index
   // But how would we switch out paragraph presets without them being broken up until after theyre stored.
 
@@ -110,56 +109,47 @@ class App extends Component {
     document.getElementById('variableInput').value = '';
     // console.log(title,'title')
     // console.log('file in onFileClick',file)
+    console.log('------STATE', this.state);
   }
 
   //------------------------------------
   onSave(param) {
-    // const { activeFileId } = this.state;
+    const {
+      activeFileId, title, newFilePars, activeFile,
+    } = this.state;
+
     console.log('this.state in Onsave', this.state)
-    const { title, newFilePars } = this.state;
-
     console.log('passed in', title, newFilePars)
-    main.save(title, newFilePars);
-
-
-    // if (!activeFileId){
-    //   const title = document.getElementById('title').value;
-    //
-    // }
-    // const par1 = document.getElementById('par1').innerHTML;
-    // const par2 = document.getElementById('par2').innerHTML;
-    // const par3 = document.getElementById('par3').innerHTML;
 
     // Checks to make sure Title is not empty
-    // if (title === '') {
-    //   this.setState({ titleClass: 'title red-shake' });
-    //   setTimeout(() => {
-    //     this.setState({ titleClass: 'title' });
-    //   }, 1000);
-    //   return;
-    // }
+    if (title === '') {
+      this.setState({ titleClass: 'title red-shake' });
+      setTimeout(() => {
+        this.setState({ titleClass: 'title' });
+      }, 1000);
+      return;
+    }
 
-    // // update file if exists
-    // if (activeFileId) {
-    //   console.log('2.Update');
-    //   main.update(activeFileId, title, par1, par2, par3);
-    //   this.getFiles();
-    // } else if (param === 'autosave') {
-    //   this.save(title, par1, par2, par3);
-    //   this.getFiles();
-    // } else {
-    //   // auto saving the file onFileClick sets the new file to activeFile
-    //
-    //
-    //   // Clicking the save button sets the first file to active so it doesn't duplicate itself
-    //   // if you switch off
-    //
-    //
-    //   // save new file if it does not exists
-    //   console.log('2.New');
-    //   this.save(title, par1, par2, par3);
-    //   this.getFiles(true);
-    // }
+    if (activeFileId) {
+      const pars = activeFile.pars;
+      // console.log('2.Update');
+      main.update(activeFileId, title, pars);
+      this.getFiles();
+    }
+    else if (param === 'autosave') {
+      // auto saving the file onFileClick sets the new file to activeFile
+      console.log('AUTOSAVE FIRED')
+      this.setState({ newFilePars : [] })
+      this.save(title, newFilePars);
+      this.getFiles();
+    } else {
+
+      // save new file if it does not exists
+      this.setState({ newFilePars : [] })
+      console.log('2.New');
+      main.save(title, newFilePars);
+      this.getFiles(true);
+    }
   }
 
   //------------------------------------
@@ -176,22 +166,23 @@ class App extends Component {
     // make sure all changes are updated to active file
     console.log('file', file);
     console.log('4.setActiveFile');
-    this.setState({ activeFileId: file.id, activeFile: file });
+    this.setState({ activeFileId: file.id, activeFile: file, title: file.title, newFilePars: [] }, () => {
+      console.log('this.state in setActiveFile',this.state)
+    });
     // set all titlefield value
     document.getElementById('title').value = file.title;
   }
 
   //------------------------------------
   newFile() {
+    const { activeFile } = this.state;
+    if (!activeFile) return;
+
     this.setState({
       activeFileId: '',
-      activeFile: {
-        id: '',
-        pars: [],
-        title: '',
-      },
+      activeFile: null,
     });
-    const pars = this.state.activeFile.pars;
+    const pars = activeFile.pars;
 
     document.getElementById('title').value = '';
     pars.forEach((par) => {
@@ -208,8 +199,8 @@ class App extends Component {
   }
 
   //------------------------------------
-  save(title, par1, par2, par3) {
-    main.save(title, par1, par2, par3);
+  save(title, pars) {
+    main.save(title, pars);
     // retrieve files
     // this.getFiles()
   }
@@ -245,7 +236,6 @@ class App extends Component {
   //------------------------------------
   // Updates state as you type
   keyUpUpdate(e, num) {
-
     // console.log('e', e);
     // console.log('num', num);
     const key = e.keyCode;
@@ -257,33 +247,42 @@ class App extends Component {
     if (!ref[key]) {
       // Don't try to console.log state because it shows
       // the updated content in state late
-      this.state.newFilePars[num -1].text = e.target.innerHTML;
+      if (this.state.activeFileId) {
+        this.state.activeFile.pars[num - 1].text = e.target.innerHTML;
+        console.log(this.state.activeFile.pars[num - 1].text)
+      } else {
+        this.state.newFilePars[num - 1].text = e.target.innerHTML;
+      }
       // this.setState({ newFilePars: this.state.newFilePars[0].text });
     }
   }
 
   //------------------------------------
-  // Doesn't work because once the value is changed the first time it no
-  // no longer has brackets around it
   replace(e) {
     const { value } = e.target;
-    const parSelectors = ['par1', 'par2', 'par3'];
     document.getElementById('title').value = document.getElementById('title').value.replace(/{.*?}/g, `{${value}}`);
-    parSelectors.forEach((selector) => {
-      document.getElementById(selector).innerHTML = document.getElementById(selector).innerHTML.replace(/<span style="color:red">.*?<\/span>/g, `<span style="color:red">${value}</span>`);
-    });
+
+    const numPars = this.state.activeFile ? this.state.activeFile.pars.length : this.state.newFilePars.length;
+
+    for (let i = 1; i <= numPars; i++) {
+      document.getElementById(`par${i}`).innerHTML = document.getElementById(`par${i}`).innerHTML.replace(/<span style="color:red">.*?<\/span>/g, `<span style="color:red">${value}</span>`);
+      this.state.activeFile.pars[i-1].text = document.getElementById(`par${i}`).textContent
+    }
   }
 
   //------------------------------------
   select() {
     const { value } = document.getElementById('selectBar');
     const re = new RegExp(value, 'g');
-    const parSelectors = ['par1', 'par2', 'par3'];
+
     if (value !== '') {
-      document.getElementById('title').innerHTML = document.getElementById('title').innerHTML.replace(re, '<span style="color:red">' + `{${value}}` + '</span>');
-      parSelectors.forEach((selector) => {
-        document.getElementById(selector).innerHTML = document.getElementById(selector).innerHTML.replace(re, '<span style="color:red">' + `${value}` + '</span>');
-      });
+      document.getElementById('title').innerHTML = document.getElementById('title').innerHTML.replace(re, `<span style="color:red">{${value}}</span>`);
+
+      const numPars = this.state.activeFile ? this.state.activeFile.pars.length : this.state.newFilePars.length;
+
+      for (let i = 1; i <= numPars; i++) {
+        document.getElementById(`par${i}`).innerHTML = document.getElementById(`par${i}`).innerHTML.replace(re, `<span style="color:red">${value}</span>`);
+      }
     }
     document.getElementById('selectBar').value = '';
   }
@@ -293,9 +292,12 @@ class App extends Component {
     // let re = new RegExp(value, "g")
     const parSelectors = ['par1', 'par2', 'par3'];
     document.getElementById('title').value = document.getElementById('title').value.replace(/\{|\}/g, '');
-    parSelectors.forEach((selector) => {
-      document.getElementById(selector).innerHTML = document.getElementById(selector).innerHTML.replace(/<span style="color:red">|<\/span>/g, '');
-    });
+
+    const numPars = this.state.activeFile ? this.state.activeFile.pars.length : this.state.newFilePars.length;
+
+    for (let i = 1; i <= numPars; i++) {
+      document.getElementById(`par${i}`).innerHTML = document.getElementById(`par${i}`).innerHTML.replace(/<span style="color:red">|<\/span>/g, '');
+    }
     document.getElementById('variableInput').value = '';
   }
 
@@ -330,21 +332,25 @@ class App extends Component {
   //------------------------------------
 
   addParagraph(e) {
+    const { activeFile } = this.state;
     // if (e) e.stopPropagation();
     console.log(this.state);
-    const temp = this.state.newFilePars.concat([{
-      file_id: 0,
-      par_num: this.state.newFilePars.length + 1,
-      text: '',
-    }]);
 
-    this.setState({ newFilePars: temp }, () => {
-      console.log(this.state.newFilePars);
-      const num = this.state.newFilePars.length;
-      document.getElementById(`par${num}`).focus();
-      // console.log('div that should focus', div)
-      // div.focus();
-    });
+
+    if (!activeFile) {
+      const temp = this.state.newFilePars.concat([{
+        file_id: 0,
+        par_num: this.state.newFilePars.length + 1,
+        text: '',
+      }]);
+      this.setState({ newFilePars: temp }, () => {
+        console.log(this.state.newFilePars);
+        const num = this.state.newFilePars.length;
+        document.getElementById(`par${num}`).focus();
+        // console.log('div that should focus', div)
+        // div.focus();
+      });
+    }
   }
 
   //------------------------------------

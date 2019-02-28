@@ -132,22 +132,34 @@ const save = exports.save = ((title, pars) => {
 });
 
 
-const update = exports.update = ((id, title, par1, par2, par3) => {
-  console.log('stuff', id, title, par1, par2, par3);
-  knex('files').where('id', '=', id).update({
-    title, par1, par2, par3,
-  }).then(() => { console.log('updated file'); })
-    .catch((e) => {
-      console.error(e);
-    });
+const update = exports.update = ((id, title, pars) => {
+  knex('files').where('id', '=', id).update({ title })
+    .then(() => {
+      pars.forEach((par) => {
+        const { text, par_num } = par;
+        console.log('par in update', par);
+
+        knex('pars').where('file_id', '=', id).andWhere('par_num', '=', par_num).update({
+          text
+        })
+          .catch((e) => { console.error(e); });
+      });
+      console.log('updated file');
+    })
+    .catch((e) => { console.error(e); });
 });
 
 const deleteFile = exports.deleteFile = ((id) => {
   console.log('id in delete', id);
-  knex('files').where('id', '=', id).delete().then(() => {
-    console.log('deleted file');
-    mainWindow.webContents.send('fileDeleted', id);
-  })
+  knex('files').where('id', '=', id).delete()
+    .then(() => {
+      mainWindow.webContents.send('fileDeleted', id);
+      knex('pars').where('file_id', '=', id).delete()
+        .catch((e) => {
+          console.error('ERROR!!!!!!!!!', e);
+        });
+      console.log('deleted file');
+    })
     .catch((e) => {
       console.error('ERROR!!!!!!!!!', e);
     });

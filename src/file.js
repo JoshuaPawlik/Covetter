@@ -13,7 +13,7 @@ const File = (props) => {
     activeFileId,
   } = props;
 
-  const par1 = pars[0].text;
+  const par1 = pars[0] ? pars[0].text : '';
   return (
     <div className={`tinyPrev ${file.id === activeFileId ? 'active' : ''}`} onClick={() => { onFileClick(file); }}>
       <FontAwesomeIcon id={file.id} icon={faTrashAlt} className="delete" onClick={(e) => { deleteFile(e, file.id); }} />
