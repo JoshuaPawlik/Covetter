@@ -51,6 +51,7 @@ class Writing extends React.Component {
               handleClick={handleClick.bind(this)}
               keyUpUpdate={keyUpUpdate.bind(this)}
               keyDownUpdate={keyDownUpdate.bind(this)}
+              addParagraph={addParagraph.bind(this)}
             />
           </div>
         </div>

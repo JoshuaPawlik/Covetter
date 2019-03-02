@@ -2,7 +2,8 @@
 
 exports.up = function (knex, Promise) {
   return createPars()
-    .then(createFiles);
+    .then(createFiles)
+    .then(makeUnique);
 
     function createPars() {
       return knex.schema.createTableIfNotExists('pars', (table) => {
@@ -10,7 +11,7 @@ exports.up = function (knex, Promise) {
         table.integer('par_num');
         table.string('text');
         table.foreign('file_id').references('id').inTable('files');
-      });
+      })
     }
 
   function createFiles() {
@@ -18,8 +19,14 @@ exports.up = function (knex, Promise) {
       table.increments('id').primary();
       table.string('title');
       // table.unique('id');
-    });
+    })
   }
+
+  function makeUnique() {
+    return knex.schema.alterTable('pars', function(t) {
+      t.unique(['file_id', 'par_num'])
+  })
+}
 
 
 };

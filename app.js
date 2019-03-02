@@ -332,6 +332,10 @@ class App extends Component {
   //------------------------------------
 
   addParagraph(e) {
+    // NEED TO WRITE AN UPDATE WHERE NOT EXISTS IN DB
+    // TO SAVE ADDED PARAGRAPHS ON AN EXISTING FILE
+
+
     const { activeFile } = this.state;
     // if (e) e.stopPropagation();
     console.log(this.state);
@@ -344,11 +348,23 @@ class App extends Component {
         text: '',
       }]);
       this.setState({ newFilePars: temp }, () => {
-        console.log(this.state.newFilePars);
         const num = this.state.newFilePars.length;
         document.getElementById(`par${num}`).focus();
         // console.log('div that should focus', div)
         // div.focus();
+      });
+    } else {
+      const num = activeFile.pars.length + 1;
+      const temp = activeFile.pars.concat([
+        {
+          file_id: activeFile.id,
+          par_num: activeFile.pars.length + 1,
+          text: '',
+        }
+      ]);
+      this.setState({ activeFile: { id: activeFile.id, pars: temp, title: activeFile.title } }, () => {
+        document.getElementById(`par${num}`).focus();
+        console.log('this.state in addParagraph else', this.state)
       });
     }
   }

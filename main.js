@@ -1,11 +1,16 @@
 /* eslint no-multi-assign: "off" */
+
+// /* eslint-disable*/
 // const electron = require('electron');
 // const app = electron.app;
 // const BrowserWindow = electron.BrowserWindow;
 const EventEmitter = require('events');
 const fs = require('fs');
 // Modules to control application life and create native browser window
-const { app, BrowserWindow, ipcMain, dialog } = require('electron');
+const {
+  app, BrowserWindow, ipcMain, dialog,
+} = require('electron');
+
 // require('electron-reload')(__dirname);
 const path = require('path');
 const knex = require('knex')({
@@ -78,7 +83,7 @@ app.on('ready', () => {
   ipcMain.setMaxListeners(20);
   knex.migrate.latest()
     .then(() => {
-	  console.log('ran a migration');
+      console.log('ran a migration');
     }).catch((err) => {
       console.log('err!!!!!!!!!!', err);
     });
@@ -100,10 +105,10 @@ const sendFiles = exports.sendFiles = async (tf) => {
   const filesWithPars = files.map((file) => {
     const fileId = file.id;
 
-    const parsForFile = pars.filter((par) => par.file_id === fileId);
+    const parsForFile = pars.filter(par => par.file_id === fileId);
     file.pars = parsForFile;
     // console.log('parsForFile', parsForFile)
-    return file
+    return file;
   });
 
   mainWindow.webContents.send('filesSent', filesWithPars, tf);
@@ -124,29 +129,55 @@ const save = exports.save = ((title, pars) => {
         // const par_num = par.par_num;
 
         knex('pars').insert({ file_id, par_num, text })
-          .catch((err) => {
-            console.log('========>', err)
-          });
+          .catch();
       });
-    });
+    }).catch();
 });
 
+
+const util = require('util');
 
 const update = exports.update = ((id, title, pars) => {
   knex('files').where('id', '=', id).update({ title })
     .then(() => {
       pars.forEach((par) => {
+        console.log('inside forEach')
         const { text, par_num } = par;
-        console.log('par in update', par);
+        const file_id = id;
+        // console.log('par in update', par);
+        //
+        // knex('pars').where('file_id', '=', id).andWhere('par_num', '=', par_num).update({
+        //   text
+        // })
+        //   .catch((e) => { console.error(e); });
 
-        knex('pars').where('file_id', '=', id).andWhere('par_num', '=', par_num).update({
-          text
-        })
-          .catch((e) => { console.error(e); });
+        const insertPar = ({ file_id, par_num, text }) => {
+          console.log('insidePar', file_id, par_num, text);
+
+          const insert = knex('pars').insert({ file_id, par_num, text }).catch();
+
+          const updatePar = knex('pars')
+            .whereRaw(`file_id = ${file_id}`)
+            .andWhere('par_num', '=', par_num)
+            .update({ text })
+            .catch();
+
+
+          const query = util.format(
+            '%s ON CONFLICT (par_num) DO UPDATE SET %s',
+            insert,
+            updatePar,
+          );
+
+          return knex.raw(query);
+        };
+
+
+        insertPar({ file_id, par_num, text });
       });
       console.log('updated file');
     })
-    .catch((e) => { console.error(e); });
+    .catch();
 });
 
 const deleteFile = exports.deleteFile = ((id) => {
@@ -163,10 +194,6 @@ const deleteFile = exports.deleteFile = ((id) => {
     .catch((e) => {
       console.error('ERROR!!!!!!!!!', e);
     });
-  // console.log(ipcMain.listenerCount('delete'))
-  // console.log(ipcMain.listenerCount('filesSent'))
-  // console.log(mainWindow.webContents.listenerCount('fileDeleted'));
-  // console.log(mainWindow.webContents.listenerCount('filesSent'));
 });
 
 // Quit when all windows are closed.
@@ -185,45 +212,3 @@ app.on('activate', () => {
     createWindow();
   }
 });
-
-// Get Files
-// ipcMain.on("needFiles", function () {
-//   let files = knex.select("*").from("files").orderBy('id','desc')
-//   files.then(function(files){
-//     // console.log('files',files);
-//     mainWindow.webContents.send("filesSent", files);
-//   })
-// });
-
-
-// Delete
-// ipcMain.on('delete',(evt,id) => {
-// 	// console.log('id in delete',id);
-// 	knex('files').where('id','=',id).delete().then(()=> {
-//     console.log('deleted file')
-//     mainWindow.webContents.send("fileDeleted");
-// }).catch((e) => {
-// 		console.error(e)
-// 	})
-//   // console.log(ipcMain.listenerCount('delete'))
-//   // console.log(ipcMain.listenerCount('filesSent'))
-//   console.log(mainWindow.webContents.listenerCount('fileDeleted'));
-//   console.log(mainWindow.webContents.listenerCount('filesSent'));
-// })
-
-
-// Update
-// ipcMain.on('update',(evt,id,title,par1,par2,par3) => {
-// 	console.log('stuff',id,title,par1,par2,par3);
-// 	knex('files').where('id','=',id).update({title:title,par1:par1,par2:par2,par3:par3}).then(()=> {console.log('updated file')}).catch((e) => {
-// 		console.error(e)
-// 	})
-// })
-
-// Save
-// ipcMain.on('save',(evt,title,par1,par2,par3) => {
-// 	// console.log('stuff',title,par1,par2,par3);
-// 	knex('files').insert({title:title,par1:par1,par2:par2,par3:par3}).then(()=> {console.log('inserted into database')}).catch((e) => {
-// 		console.error(e)
-// 	})
-// })

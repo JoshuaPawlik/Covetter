@@ -12,6 +12,7 @@ const Paragraphs = (props) => {
           parNum={par.par_num}
           handleClick={props.handleClick}
           keyUpUpdate={props.keyUpUpdate}
+          addParagraph={props.addParagraph}
           keyDownUpdate={props.keyDownUpdate}
           state={props.state}
         />

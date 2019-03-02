@@ -8,6 +8,7 @@ const Paragraph = (props) => {
     handleClick,
     keyDownUpdate,
     keyUpUpdate,
+    addParagraph,
   } = props;
   return (
     <div className="paragraph">
@@ -20,7 +21,14 @@ const Paragraph = (props) => {
         id={`par${parNum}`}
         className="textarea"
         onKeyUp={e => keyUpUpdate(e, parNum)}
-        onKeyDown={keyDownUpdate}
+        onKeyDown={(e) => {
+          if (e.keyCode === 13) {
+            e.preventDefault();
+            addParagraph(e);
+          } else {
+            keyDownUpdate(e);
+          }
+        }}
       >
         {text}
       </div>
