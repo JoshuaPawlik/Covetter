@@ -1,7 +1,7 @@
 # Covetter
 An Electron desktop application that accelerates writing similar cover letters  
 
-## If you would like to try it out in it's current state:  
+## If you would like to try out Covetter in its current state:  
 1. `git clone https://github.com/Joshawesome12/Covetter.git`  
 2. `cd Covetter`  
 3. `npm install`
